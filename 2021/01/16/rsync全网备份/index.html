@@ -95,18 +95,14 @@
 <p><strong>开启163邮件代理</strong><br><img src="https://i.loli.net/2020/12/22/SWubvVd7T1PzCgs.png"></p>
 <p><img src="https://i.loli.net/2020/12/22/seJ5TpS3wiU7Aob.png"></p>
 <p><strong>编辑邮箱配置文件，添加配置</strong></p>
-<blockquote>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ tail -2 /etc/mail.rc             </span><br><span class="line">set from=163邮箱账户 smtp=smtp.163.com</span><br><span class="line">set smtp-auth-user=163邮箱账户 smtp-auth-password=上述截图的授权码 smtp-auth=login</span><br></pre></td></tr></table></figure>
-</blockquote>
+
 <p><strong>发送邮件</strong></p>
-<blockquote>
 <figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ echo &quot;邮件发送测试&quot; |mail -s &quot;mail check&quot; qq邮箱账户</span><br><span class="line">$ mail -s  &quot;邮箱测试&quot; qq邮箱账户 &lt; 文件</span><br></pre></td></tr></table></figure>
-</blockquote>
+
 <p><strong>测试</strong></p>
-<blockquote>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ find /backup/ -type f -name &quot;finger.txt&quot;|xargs md5sum -c &amp;&gt;/tmp/check.txt</span><br><span class="line">$ echo &quot;邮件发送测试&quot; |mail -s &quot;邮箱测试&quot; qq邮箱账户 &lt;/tmp/check.txt </span><br></pre></td></tr></table></figure>
 <p><strong><code>PS：使用find命令找到指纹文件，通过xargs将给md5sum处理，&#39;&amp;&#39;代表也将错误信息一起写入到文件</code></strong></p>
-</blockquote>
 <p><strong>收到的邮件</strong></p>
 <p><img src="https://i.loli.net/2020/12/22/I1GJsYzcVBpt6dS.png"></p>
 <p><img src="https://i.loli.net/2020/12/22/sMNYt51kAFGydio.png"></p>
