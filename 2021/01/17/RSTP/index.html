@@ -13,26 +13,30 @@
 <ol>
 <li><p>新增 AP（预备端口）和 BP（备份端口）</p>
 <ul>
-<li>AP（预备端口）：</li>
+<li><p>AP（预备端口）：</p>
+<p>a. 当交换机的RP端口down掉时，AP端口会立刻成为AP端口，并且立刻进入forwarding状态。</p>
+</li>
+<li><p>BP（备份端口）：</p>
+<p>a. 当交换机从一个接口收到一份BPDU报文，包含的发送者桥ID为本身交换机的桥ID同时BPDU比本地接口的BPDU优时，则接口会被选为BP端口。</p>
+<p>b. 当DP端口down掉时，BP端口需要等待18s的时间才会成为DP端口。</p>
+</li>
 </ul>
-<p>​       a）当交换机的RP端口down掉时，AP端口会立刻成为AP端口，并且立刻进入forwarding状态。</p>
-<ul>
-<li>BP（备份端口）：</li>
-</ul>
-<p>​       a）当交换机从一个接口收到一份BPDU报文，包含的发送者桥ID为本身交换机的桥ID同时BPDU比本地接口的BPDU优时，则接口会被选为BP端口。<br>​       b）当DP端口down掉时，BP端口需要等待18s的时间才会成为DP端口。</p>
 </li>
 <li><p>新增边缘端口：</p>
 <ul>
-<li>边缘端口（EP）：由网络管理员手工配置，配置在交换机链接终端设备（电脑，AP，服务器等）</li>
-<li>特性：</li>
+<li><p>边缘端口（EP）：由网络管理员手工配置，配置在交换机链接终端设备（电脑，AP，服务器等）</p>
+</li>
+<li><p>特性：</p>
+<p>a. 一旦端口被设置为边缘端口，端口立刻进入forwarding状态。</p>
+<p>b. 边缘端口UP/down不会引起RSTP的网络拓扑变化。</p>
+<p>c. RSTP的网络拓扑不会影响边缘端口的通信。</p>
+</li>
 </ul>
-<p>​      a）一旦端口被设置为边缘端口，端口立刻进入forwarding状态。<br>​      b）边缘端口UP/down不会引起RSTP的网络拓扑变化。</p>
-<p>​      c）RSTP的网络拓扑不会影响边缘端口的通信。</p>
 </li>
 </ol>
 </blockquote>
+<p><strong>RSTP增加的快速机制：</strong></p>
 <blockquote>
-<p>RSTP增加的快速机制：</p>
 <ol>
 <li>RSTP快速收敛机制一：当交换机的RP端口down掉时，AP端口会立刻成为AP端口，并且立刻进入forwarding状态。</li>
 <li>RSTP快速收敛机制二：当端口设置为边缘端口，会立刻进入forwarding状态</li>
