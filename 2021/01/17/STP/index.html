@@ -14,9 +14,9 @@
 </blockquote>
 <h2 id="为什么需要生成树"><a href="#为什么需要生成树" class="headerlink" title="为什么需要生成树"></a>为什么需要生成树</h2><p>1）生成树的出现不是真的需要，而是间接的需要<br>2）二层环境中需要备份和冗余</p>
 <p><strong>在这种环境中没有环路，但是缺少了备份</strong></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117111155.png" alt="image-20210117111155513"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117111155.png"></p>
 <p><strong>在这种环境中解决了备份，但是不做处理会导致环路，这时STP就有发挥它的作用了</strong></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117111306.png" alt="image-20210117111306699"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117111306.png"></p>
 <h2 id="STP作用"><a href="#STP作用" class="headerlink" title="STP作用"></a>STP作用</h2><p><strong>STP在保证网络的冗余性的同时，保证交换机网络中不会出现二层环路</strong></p>
 <blockquote>
 <p>原理：通过在逻辑上阻塞某一些端口，使交换机成为树形网络，破除环路在链路上或设备发生故障时，又重新启动阻塞端口，使网络恢复数据转发.</p>
@@ -67,21 +67,21 @@
 </ol>
 </blockquote>
 <h2 id="STP的不足问题"><a href="#STP的不足问题" class="headerlink" title="STP的不足问题"></a>STP的不足问题</h2><p><strong>问题1：初始化状态需要30秒的时间才能收敛</strong></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117111900.png" alt="image-20210117111859899"></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117111921.png" alt="image-20210117111921479"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117111900.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117111921.png"></p>
 <p><strong>S3与S1的直连链路down掉，AP端口切换成RP端口并进入转发状态至少需要经过30S</strong></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117111940.png" alt="image-20210117111940727"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117111940.png"></p>
 <p><strong>问题3：S1与S2直连链路down掉，则S3的AP端口切换成DP端口并进入发状态大约需要50s：</strong></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117112009.png" alt="image-20210117112009260"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117112009.png"></p>
 <p><strong>问题4：交换机连接终端的链路进入转发需要经过30s</strong></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117112031.png" alt="image-20210117112031010"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117112031.png"></p>
 <p><strong>问题5：STP的拓扑变更机制</strong></p>
 <blockquote>
 <p>TC（Topology change）拓扑改变:先由变更点朝根桥方向发送TCN消息收到该消息的上游交换机就会回复TCA消息进行确认；最后TCN消息到达根桥后，再由根桥发送TC消息通知设备删除桥MAC地址表项，机制复杂，效率低下。</p>
 </blockquote>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117112111.png" alt="image-20210117112111201"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117112111.png"></p>
 <p><strong>问题6：STP的其他不足之处–端口状态</strong></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117112130.png" alt="image-20210117112130136"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117112130.png"></p>
 </div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Inaction</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://myboke.ink/2021/01/17/STP/">https://myboke.ink/2021/01/17/STP/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/STP/">STP</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2021/01/17/RSTP/"><i class="fa fa-chevron-left">  </i><span>RSTP</span></a></div><div class="next-post pull-right"><a href="/2021/01/16/EVE-NG%E6%90%AD%E5%BB%BA/"><span>EVE-NG搭建</span><i class="fa fa-chevron-right"></i></a></div></nav><div id="gitalk-container"></div><script>var gitalk = new Gitalk({
   clientID: '6cea6a646bff1a0d5f5b',
   clientSecret: '6e9ef08f31f505d416bc0afe2d304808e9063627',
