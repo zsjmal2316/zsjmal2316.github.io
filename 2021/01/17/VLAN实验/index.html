@@ -12,17 +12,17 @@
 <blockquote>
 <p>PC1和PC3网段属于VLAN10<br>PC2和PC4网段属于VLAN20<br>主机地址<br>PC1：192.1.1.1<br>PC2：192.1.1.2<br>PC3：192.1.1.3<br>PC4：192.1.1.4</p>
 </blockquote>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117135816.png" alt="image-20210117135816341"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117135816.png"></p>
 <h3 id="S3配置"><a href="#S3配置" class="headerlink" title="S3配置"></a>S3配置</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">int e0/0</span><br><span class="line">swi mo acc</span><br><span class="line">swi acc vlan 10</span><br><span class="line"></span><br><span class="line">int e0/1</span><br><span class="line">swi mo acc</span><br><span class="line">swi acc vlan 20</span><br><span class="line"></span><br><span class="line">int e0/2</span><br><span class="line">swi mo acc</span><br><span class="line">swi acc vlan 10</span><br><span class="line"></span><br><span class="line">int e0/3</span><br><span class="line">swi mo acc</span><br><span class="line">swi acc vlan 20</span><br></pre></td></tr></table></figure>
 <p><strong>PC1和PC3同属于一个vlan,可以ping通，但是和P2和P4不同vlan不能ping通，换过来说P2和P4也一样不能ping通P1和P3</strong></p>
 <h2 id="Trunk链路应用"><a href="#Trunk链路应用" class="headerlink" title="Trunk链路应用"></a>Trunk链路应用</h2><p><strong>还是根据上面的地址和VLAN划分，添加多了一台交换机</strong></p>
 <h3 id="S1和S2的配置"><a href="#S1和S2的配置" class="headerlink" title="S1和S2的配置"></a>S1和S2的配置</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">S1：int e0/0</span><br><span class="line">Swi trunk encapsulation dot1q</span><br><span class="line">Swi mode trunk</span><br><span class="line"></span><br><span class="line">S2：int e0/0</span><br><span class="line">Swi trunk encapsulation dot1q</span><br><span class="line">Swi mode trunk</span><br></pre></td></tr></table></figure>
 <p><strong>终端和交换机之间的access接口配置还是一样，两端的交换机需要封装802.1q协议，封装之后，应用trunk模式，同VLAN之间可以通信，不同VLAN还是不能通信</strong></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117135919.png" alt="image-20210117135919117"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117135919.png"></p>
 <p><strong>使用wireshark抓取的icmp数据包，turnk封装了802.1q，VLAN-id为10</strong></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117135937.png" alt="image-20210117135937679"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117135937.png"></p>
 <h2 id="交换机不同模式使用出现的问题"><a href="#交换机不同模式使用出现的问题" class="headerlink" title="交换机不同模式使用出现的问题"></a>交换机不同模式使用出现的问题</h2><h3 id="问题1"><a href="#问题1" class="headerlink" title="问题1"></a>问题1</h3><p><strong>switch1两个接口都是VLAN10，switch2两个接口都是VLAN20，请问它们可以通信么？</strong></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117140005.png" alt="image-20210117140005712"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117140005.png"></p>
 <h4 id="switch-1配置"><a href="#switch-1配置" class="headerlink" title="switch 1配置"></a>switch 1配置</h4><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">S1(config)<span class="selector-id">#vlan</span> 10</span><br><span class="line">interface GigabitEthernet0/0</span><br><span class="line">switchport access vlan 10</span><br><span class="line">switchport mode access</span><br><span class="line"></span><br><span class="line">interface GigabitEthernet0/1</span><br><span class="line">switchport access vlan 10</span><br><span class="line">switchport mode access</span><br></pre></td></tr></table></figure>
 <h4 id="switch-2配置"><a href="#switch-2配置" class="headerlink" title="switch 2配置"></a>switch 2配置</h4><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">S2(config)<span class="selector-id">#vlan</span> 20</span><br><span class="line">interface GigabitEthernet0/0</span><br><span class="line">switchport access vlan 20</span><br><span class="line">switchport mode access</span><br><span class="line"></span><br><span class="line">interface GigabitEthernet0/1</span><br><span class="line">switchport access vlan 20</span><br><span class="line">switchport mode access</span><br></pre></td></tr></table></figure>
 <p><strong>答：不能通信，因为VLAN需要同步</strong></p>
@@ -36,11 +36,11 @@
 <p>说明：PC1发送数据包给PC2，进入到switch1中，没有标签的数据包会打上vlan-id标签，发现目标是从自己gi0/1接口出去的，查看自己的gi0/1接口vlan-id标签，发现标签是一致，然后剥开vlan-id标签发送给switch2，接着switch2情况也和switch1一样.最终抵达PC2</p>
 </blockquote>
 <h3 id="问题2"><a href="#问题2" class="headerlink" title="问题2"></a>问题2</h3><p><strong>switch2的access-VLAN20接口改成trunk-VLAN20，请问PC1能pingPC2么?</strong></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117140148.png" alt="image-20210117140148779"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117140148.png"></p>
 <h4 id="switch-2的配置"><a href="#switch-2的配置" class="headerlink" title="switch 2的配置"></a>switch 2的配置</h4><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">interface GigabitEthernet0/0</span><br><span class="line">switchport trunk encapsulation dot1q</span><br><span class="line">switchport trunk native vlan 20</span><br><span class="line">switchport mode trunk</span><br></pre></td></tr></table></figure>
 <p><strong>答：不能ping通，因为模式不一样，一个是没有封装802.1q，一个没有封装了802.1q，匹配不成功，所以数据不可达</strong></p>
 <h3 id="问题3"><a href="#问题3" class="headerlink" title="问题3"></a>问题3</h3><p><strong>switch1的g0/1接口设置成为trunk-VLAN10，switch2还是原来的trunk-VLAN20，PC1能否ping通PC2</strong></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117140242.png" alt="image-20210117140242430"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117140242.png"></p>
 <p><strong>答：不能ping通</strong></p>
 <blockquote>
 <ol>
@@ -48,14 +48,14 @@
 <li>如果两台通信的交换机配置的native vlan不一致,就会出现mismatch（不匹配）错误，两端的native vlan不匹配的trunk链路,一端的端口会被block住,而不会转发流量.</li>
 </ol>
 </blockquote>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117140326.png" alt="image-20210117140326204"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117140326.png"></p>
 <h2 id="综合实验"><a href="#综合实验" class="headerlink" title="综合实验"></a>综合实验</h2><blockquote>
 <ol>
 <li>s2两端都为access-vlan10，s3连接终端的接口为access-vlan20，连接三层交换机的接口为trunk-vlan20.</li>
 <li>s1三层交换机gi0/1接口为192.168.1.254,gi0/0接口为172.16.1.254.</li>
 </ol>
 </blockquote>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117140354.png" alt="image-20210117140354320"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117140354.png"></p>
 <h3 id="主机地址配置"><a href="#主机地址配置" class="headerlink" title="主机地址配置"></a>主机地址配置</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PC3</span><br><span class="line">VPCS&gt; ip 192.168.1.1/24 192.168.1.25</span><br><span class="line">PC4</span><br><span class="line">VPCS&gt; ip 172.16.1.1/24 172.16.1.254</span><br></pre></td></tr></table></figure>
 <h3 id="S2配置"><a href="#S2配置" class="headerlink" title="S2配置"></a>S2配置</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">interface GigabitEthernet0/0</span><br><span class="line"> switchport access vlan 10</span><br><span class="line"> switchport mode access</span><br><span class="line">!</span><br><span class="line">interface GigabitEthernet0/1</span><br><span class="line"> switchport access vlan 10</span><br><span class="line"> switchport mode access</span><br></pre></td></tr></table></figure>
 <h3 id="S3配置-1"><a href="#S3配置-1" class="headerlink" title="S3配置"></a>S3配置</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">interface GigabitEthernet0/0</span><br><span class="line"> switchport access vlan 20</span><br><span class="line">!</span><br><span class="line">interface GigabitEthernet0/1</span><br><span class="line"> switchport trunk encapsulation dot1q</span><br><span class="line"> switchport trunk native vlan 20</span><br><span class="line"> switchport mode trunk</span><br></pre></td></tr></table></figure>
