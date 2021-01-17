@@ -80,19 +80,21 @@
 </li>
 <li><p>Backup状态：</p>
 <ul>
-<li>它会实时监控当前Master路由器的状态，并随时接替工作。<pre><code>a. 对关于VRRP虚拟IP地址的ARP请求不响应。
-b. 丢弃目的MAC地址为VRRP虚拟MAC地址的数据帧。
-c. 不接受目的IP地址为VRRP虚拟IP地址的数据包
-d. 实时侦听Master路由器发送的报文。若该VRRP报文的优先级为0（这意味着当前Master路由器希望主动放弃Master状态）</code></pre>
+<li><p>它会实时监控当前Master路由器的状态，并随时接替工作。</p>
+<p>a. 对关于VRRP虚拟IP地址的ARP请求不响应。</p>
+<p>b. 丢弃目的MAC地址为VRRP虚拟MAC地址的数据帧。</p>
+<p>c. 不接受目的IP地址为VRRP虚拟IP地址的数据包</p>
+<p>d. 实时侦听Master路由器发送的报文。若该VRRP报文的优先级为0（这意味着当前Master路由器希望主动放弃Master状态）</p>
 </li>
 </ul>
 </li>
 <li><p>Master状态：</p>
 <ul>
-<li>它承担着数据转发任务<pre><code>a. 当收到关于虚拟IP地址的ARP请求时，以虚拟MAC地址进行回应。
-b. 转发目的MAC地址为虚拟MAC地址。
-c. 周期性地发送VRRP报文，时间间隔缺省为1S。
-d. 当收到一个VRRP报文时，若该优先级为０，则继续发送自己的报文，若该VRRP报文优先级不为０，并比本接口的VRRP优先级值更大，或者VRRP优先级相等但是VRRP报文的源IP地址比本接口大，则将接口切换成Backuo状态。若该VRRP报文不为0，并且比本接口优先级更小，则忽略该报文。</code></pre>
+<li><p>它承担着数据转发任务</p>
+<p>a. 当收到关于虚拟IP地址的ARP请求时，以虚拟MAC地址进行回应。</p>
+<p>b. 转发目的MAC地址为虚拟MAC地址。</p>
+<p>c. 周期性地发送VRRP报文，时间间隔缺省为1S。</p>
+<p>d. 当收到一个VRRP报文时，若该优先级为０，则继续发送自己的报文，若该VRRP报文优先级不为０，并比本接口的VRRP优先级值更大，或者VRRP优先级相等但是VRRP报文的源IP地址比本接口大，则将接口切换成Backuo状态。若该VRRP报文不为0，并且比本接口优先级更小，则忽略该报文。</p>
 </li>
 </ul>
 </li>
@@ -109,20 +111,31 @@ d. 当收到一个VRRP报文时，若该优先级为０，则继续发送自己�
 <blockquote>
 <p>报文格式：VRRP协议的正常工作以来于VRRP报文的正确收发，VRRP之定义了一种报文格式，即通过报文，它被封装在IP报文中，IP头部的协议号字段值为112，报文的目的IP地址是组播地址224.0.0.18.</p>
 <ol>
-<li>各个字段的含义如下：<ul>
-<li>版本（Version）：对于VRRPv2来说，该字段的值恒为2</li>
-<li>类型（Type）：VRRP之定义了通告报文这一种报文类型.该字段的值恒为1.</li>
-<li>虚拟路由器ID（VRID）：虚拟路由器的标识符，取值范围是1~255，属于同一个VRRP组的路由器需使用相同的VRID.</li>
-<li>优先级（Priority）：取值范围0~255，该值越大，则VRRP优先级越高，路由器也就越有可能成为Master</li>
-<li>IP地址个数（Count IP Address）：VRRP组中虚拟IP地址的个数.这个字段的值指示了改报文后续的”IP地址”字段的个数</li>
-<li>认证类型（Authentication Type）：VRRP报文的认证烈性，有以下三种情况. <pre><code> 1.当该字段为0时，表示无认证（Non Authentication）；
- 2.当该字段为1时，表示明文认证方式（Simple Text Password）；
- 3.当该字段为2时，表示MD5认证方式（IP Authentication Header）；</code></pre>
+<li><p>各个字段的含义如下：</p>
+<ul>
+<li><p>版本（Version）：对于VRRPv2来说，该字段的值恒为2</p>
 </li>
-<li>通告间隔（Advertisement Interval）：VRRP报文的发送时间间隔（单位为秒），缺省情况下，VRRP的报文发送时间间隔为1s.</li>
-<li>校验和（Checksum）：校验和</li>
-<li>IP地址（IP address）：VRRP虚拟IP地址</li>
-<li>认证数据（Authentication Data）：VRRP认证数据，当VRRP明文认证或MD5认证被激活时，该字段则填充相应的数据.</li>
+<li><p>类型（Type）：VRRP之定义了通告报文这一种报文类型.该字段的值恒为1.</p>
+</li>
+<li><p>虚拟路由器ID（VRID）：虚拟路由器的标识符，取值范围是1~255，属于同一个VRRP组的路由器需使用相同的VRID.</p>
+</li>
+<li><p>优先级（Priority）：取值范围0~255，该值越大，则VRRP优先级越高，路由器也就越有可能成为Master</p>
+</li>
+<li><p>IP地址个数（Count IP Address）：VRRP组中虚拟IP地址的个数.这个字段的值指示了改报文后续的”IP地址”字段的个数</p>
+</li>
+<li><p>认证类型（Authentication Type）：VRRP报文的认证烈性，有以下三种情况. </p>
+<p>a. 当该字段为0时，表示无认证（Non Authentication）；</p>
+<p>b. 当该字段为1时，表示明文认证方式（Simple Text Password）；</p>
+<p>c. 当该字段为2时，表示MD5认证方式（IP Authentication Header）；</p>
+</li>
+<li><p>通告间隔（Advertisement Interval）：VRRP报文的发送时间间隔（单位为秒），缺省情况下，VRRP的报文发送时间间隔为1s.</p>
+</li>
+<li><p>校验和（Checksum）：校验和</p>
+</li>
+<li><p>IP地址（IP address）：VRRP虚拟IP地址</p>
+</li>
+<li><p>认证数据（Authentication Data）：VRRP认证数据，当VRRP明文认证或MD5认证被激活时，该字段则填充相应的数据.</p>
+</li>
 </ul>
 </li>
 </ol>
