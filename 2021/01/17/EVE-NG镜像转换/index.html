@@ -13,7 +13,7 @@
 <p><strong>第二个步骤：新建hda.qcow2虚拟磁盘</strong></p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在linux-Centos7目录下创建一块虚拟磁盘，名称为hda.qcow2，大小为40G（根据实际情况判定，不一定要40G）</span></span><br><span class="line">  /opt/qemu/bin/qemu-img create -f qcow2 hda.qcow2 40G</span><br></pre></td></tr></table></figure>
 <p><strong>第三个步骤：安装Centos7.0操作系统</strong></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117190826.png" alt="image-20210117190826320"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117190826.png"></p>
 <blockquote>
 <ol>
 <li>下面的操作需要自行去完成，这里只写入了步骤<ul>
@@ -29,14 +29,14 @@
 <blockquote>
 <p>点击自己创建的LAB找到UUID编号</p>
 </blockquote>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117190953.png" alt="image-20210117190953900"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117190953.png"></p>
 <figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在/opt/unetlab/temp/0找到上面对应的UUID编号，进入1目录（1目录就是在LAB标签中创建的第一台linux服务，ID值为1），然后找到hda.qcow2文件</span></span><br><span class="line">  路径：/opt/unetlab/tmp/0/97c93af0-853e-46e5-8bca-60c47f47bd5d/1</span><br><span class="line"><span class="comment">//查看文件是否存在</span></span><br><span class="line">  ls hda<span class="selector-class">.qcow2</span></span><br><span class="line"><span class="comment">//重建hda.qcow2镜像文件并移动到qemu的linux-Centos7目录中</span></span><br><span class="line">  /opt/qemu/bin/qemu-img convert -c –p -O qcow2 hda.qcow2 /opt/unetlab/addons/qemu/linux-Centos7/hda.qcow2 #--&gt;这是一整条命令</span><br><span class="line"><span class="comment">//压缩had.qcow2文件（优化）</span></span><br><span class="line">  路径：/opt/unetlab/addons/qemu/linux-Centos7</span><br><span class="line">  压缩：virt-sparsify --compress hda<span class="selector-class">.qcow2</span> linux<span class="selector-class">.qcow2</span> <span class="selector-id">#--</span>&gt;先随便起一个名字</span><br><span class="line">  移动：mv linux<span class="selector-class">.qcow2</span> had<span class="selector-class">.qcow2</span> <span class="selector-id">#--</span>&gt;在修改名称回来</span><br></pre></td></tr></table></figure>
 <p><strong>第五个步骤：新增一台Linux服务器，并查看优化结果：</strong></p>
 <p>略………………………..</p>
-<h2 id="第二种方式（推荐）"><a href="#第二种方式（推荐）" class="headerlink" title="第二种方式（推荐）"></a>第二种方式（推荐）</h2><h3 id="将VMware中运行的虚拟机转移到EVE中运行"><a href="#将VMware中运行的虚拟机转移到EVE中运行" class="headerlink" title="将VMware中运行的虚拟机转移到EVE中运行"></a>将VMware中运行的虚拟机转移到EVE中运行</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117191038.png" alt="image-20210117191038153"></p>
+<h2 id="第二种方式（推荐）"><a href="#第二种方式（推荐）" class="headerlink" title="第二种方式（推荐）"></a>第二种方式（推荐）</h2><h3 id="将VMware中运行的虚拟机转移到EVE中运行"><a href="#将VMware中运行的虚拟机转移到EVE中运行" class="headerlink" title="将VMware中运行的虚拟机转移到EVE中运行"></a>将VMware中运行的虚拟机转移到EVE中运行</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117191038.png"></p>
 <p><strong>第一个步骤：创建一个linux-vmdk目录并在window找到安装虚拟机目录下的.vmdk文件上传至创建的目录中</strong></p>
 <figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建目录并上传文件</span></span><br><span class="line">  路径：/opt/unetlab/addons/qemu</span><br><span class="line">  创建：mkdir linux-vmdk</span><br><span class="line">  上传：使用winscp工具 <span class="selector-id">#--</span>&gt;这里忽略</span><br></pre></td></tr></table></figure>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117191055.png" alt="image-20210117191055351"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117191055.png"></p>
 <blockquote>
 <p><strong><code>注意一点：这台虚拟机使用的磁盘存储是在单个文件上，而不是多个文件上，如果是多个文件上，需要使用工具合成一个。</code></strong></p>
 </blockquote>
@@ -56,13 +56,13 @@
 </ol>
 </blockquote>
 <p><strong>第四个步骤：查看优化结果</strong></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117191502.png" alt="image-20210117191502638"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117191502.png"></p>
 <p><strong>第五个步骤：新建节点，开机测试</strong></p>
 <blockquote>
 <p>使用第二方法好处是，不需要重新安装系统</p>
 </blockquote>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117191601.png" alt="image-20210117191601362"></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117191532.png" alt="image-20210117191531935"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117191601.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117191532.png"></p>
 <h2 id="其他类型文件转换为qcow2格式"><a href="#其他类型文件转换为qcow2格式" class="headerlink" title="其他类型文件转换为qcow2格式"></a>其他类型文件转换为qcow2格式</h2><h3 id="img类型文件转换为qcow2"><a href="#img类型文件转换为qcow2" class="headerlink" title="img类型文件转换为qcow2"></a>img类型文件转换为qcow2</h3><blockquote>
 <p>//注意：img使用的raw参数转换<br>/opt/qemu/bin/qemu-img convert -f  raw -O qcow2 win2003.img hda.qcow2</p>
 </blockquote>
