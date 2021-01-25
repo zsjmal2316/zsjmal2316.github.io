@@ -6,7 +6,7 @@
   <link href="https://myboke.ink/atom.xml" rel="self"/>
   
   <link href="https://myboke.ink/"/>
-  <updated>2021-01-25T11:08:00.551Z</updated>
+  <updated>2021-01-25T11:17:27.444Z</updated>
   <id>https://myboke.ink/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://myboke.ink/2021/01/25/hexo%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/"/>
     <id>https://myboke.ink/2021/01/25/hexo%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/</id>
     <published>2021-01-25T10:31:30.000Z</published>
-    <updated>2021-01-25T11:08:00.551Z</updated>
+    <updated>2021-01-25T11:17:27.444Z</updated>
     
     
       
@@ -31,6 +31,10 @@
     
     
     
+    <category term="博客" scheme="https://myboke.ink/categories/%E5%8D%9A%E5%AE%A2/"/>
+    
+    
+    <category term="hexo" scheme="https://myboke.ink/tags/hexo/"/>
     
   </entry>
   
