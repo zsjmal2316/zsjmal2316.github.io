@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Inaction&#39;s Blog</title>
+  
+  <subtitle>Efforts may not be successful, but success is inseparable from hard work</subtitle>
+  <link href="https://myboke.ink/atom.xml" rel="self"/>
+  
+  <link href="https://myboke.ink/"/>
+  <updated>2021-01-25T11:02:12.770Z</updated>
+  <id>https://myboke.ink/</id>
+  
+  <author>
+    <name>Inaction</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>hexo搭建静态博客</title>
+    <link href="https://myboke.ink/2021/01/25/hexo%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/"/>
+    <id>https://myboke.ink/2021/01/25/hexo%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/</id>
+    <published>2021-01-25T10:31:30.000Z</published>
+    <updated>2021-01-25T11:02:12.770Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;Hexo使用melody主题搭建博客&quot;&gt;&lt;a href=&quot;#Hexo使用melody主题搭建博客&quot; class=&quot;headerlink&quot; title=&quot;Hexo使用melody主题搭建博客&quot;&gt;&lt;/a&gt;Hexo使用melody主题搭建博客&lt;/h1&gt;&lt;h2 id=&quot;H</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Typora+PicGo+图床</title>
+    <link href="https://myboke.ink/2021/01/23/Typora-PicGo-%E5%9B%BE%E5%BA%8A/"/>
+    <id>https://myboke.ink/2021/01/23/Typora-PicGo-%E5%9B%BE%E5%BA%8A/</id>
+    <published>2021-01-23T13:32:20.000Z</published>
+    <updated>2021-01-23T13:40:02.209Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;Typora-PicGo-图床&quot;&gt;&lt;a href=&quot;#Typora-PicGo-图床&quot; class=&quot;headerlink&quot; title=&quot;Typora+PicGo+图床&quot;&gt;&lt;/a&gt;Typora+PicGo+图床&lt;/h1&gt;&lt;h2 id=&quot;Typora介绍&quot;&gt;&lt;a </summary>
+      
+    
+    
+    
+    <category term="Other" scheme="https://myboke.ink/categories/Other/"/>
+    
+    
+    <category term="Typora" scheme="https://myboke.ink/tags/Typora/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>firewalld应用操作</title>
+    <link href="https://myboke.ink/2021/01/21/firewalld%E5%BA%94%E7%94%A8%E6%93%8D%E4%BD%9C/"/>
+    <id>https://myboke.ink/2021/01/21/firewalld%E5%BA%94%E7%94%A8%E6%93%8D%E4%BD%9C/</id>
+    <published>2021-01-21T13:21:09.000Z</published>
+    <updated>2021-01-21T13:56:06.181Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;Firewalld防火墙&quot;&gt;&lt;a href=&quot;#Firewalld防火墙&quot; class=&quot;headerlink&quot; title=&quot;Firewalld防火墙&quot;&gt;&lt;/a&gt;Firewalld防火墙&lt;/h1&gt;&lt;h2 id=&quot;Firewalld基本概述&quot;&gt;&lt;a href=&quot;#</summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="https://myboke.ink/categories/Linux/"/>
+    
+    
+    <category term="firewalld" scheme="https://myboke.ink/tags/firewalld/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>iptables应用操作</title>
+    <link href="https://myboke.ink/2021/01/21/iptables%E5%BA%94%E7%94%A8%E6%93%8D%E4%BD%9C/"/>
+    <id>https://myboke.ink/2021/01/21/iptables%E5%BA%94%E7%94%A8%E6%93%8D%E4%BD%9C/</id>
+    <published>2021-01-21T06:37:57.000Z</published>
+    <updated>2021-01-21T07:06:26.783Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;iptables&quot;&gt;&lt;a href=&quot;#iptables&quot; class=&quot;headerlink&quot; title=&quot;iptables&quot;&gt;&lt;/a&gt;iptables&lt;/h1&gt;&lt;h2 id=&quot;iptables防火墙简介&quot;&gt;&lt;a href=&quot;#iptables防火墙简介&quot; c</summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="https://myboke.ink/categories/Linux/"/>
+    
+    
+    <category term="iptables" scheme="https://myboke.ink/tags/iptables/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>rsync全网备份</title>
+    <link href="https://myboke.ink/2021/01/17/rsync%E5%85%A8%E7%BD%91%E5%A4%87%E4%BB%BD/"/>
+    <id>https://myboke.ink/2021/01/17/rsync%E5%85%A8%E7%BD%91%E5%A4%87%E4%BB%BD/</id>
+    <published>2021-01-17T14:37:59.000Z</published>
+    <updated>2021-01-17T14:52:36.108Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;全网备份&quot;&gt;&lt;a href=&quot;#全网备份&quot; class=&quot;headerlink&quot; title=&quot;全网备份&quot;&gt;&lt;/a&gt;全网备份&lt;/h1&gt;&lt;h2 id=&quot;项目环境准备&quot;&gt;&lt;a href=&quot;#项目环境准备&quot; class=&quot;headerlink&quot; title=&quot;项目环境准</summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="https://myboke.ink/categories/Linux/"/>
+    
+    
+    <category term="rsync" scheme="https://myboke.ink/tags/rsync/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Centos6克隆问题</title>
+    <link href="https://myboke.ink/2021/01/17/Centos6%E5%85%8B%E9%9A%86%E9%97%AE%E9%A2%98/"/>
+    <id>https://myboke.ink/2021/01/17/Centos6%E5%85%8B%E9%9A%86%E9%97%AE%E9%A2%98/</id>
+    <published>2021-01-17T13:52:44.000Z</published>
+    <updated>2021-01-17T14:08:17.986Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;CentOS6的克隆问题&quot;&gt;&lt;a href=&quot;#CentOS6的克隆问题&quot; class=&quot;headerlink&quot; title=&quot;CentOS6的克隆问题&quot;&gt;&lt;/a&gt;CentOS6的克隆问题&lt;/h1&gt;&lt;h2 id=&quot;使用VMware克隆新的虚拟机，网络无法访问&quot;&gt;&lt;</summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="https://myboke.ink/categories/Linux/"/>
+    
+    
+    <category term="CentOS" scheme="https://myboke.ink/tags/CentOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Centos7安装</title>
+    <link href="https://myboke.ink/2021/01/17/Centos7%E5%AE%89%E8%A3%85/"/>
+    <id>https://myboke.ink/2021/01/17/Centos7%E5%AE%89%E8%A3%85/</id>
+    <published>2021-01-17T13:48:06.000Z</published>
+    <updated>2021-01-17T14:31:33.957Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;CentOS7安装&quot;&gt;&lt;a href=&quot;#CentOS7安装&quot; class=&quot;headerlink&quot; title=&quot;CentOS7安装&quot;&gt;&lt;/a&gt;CentOS7安装&lt;/h1&gt;&lt;h2 id=&quot;镜像&quot;&gt;&lt;a href=&quot;#镜像&quot; class=&quot;headerlink&quot; </summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="https://myboke.ink/categories/Linux/"/>
+    
+    
+    <category term="CentOS" scheme="https://myboke.ink/tags/CentOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SecureCRT安装与配置方案</title>
+    <link href="https://myboke.ink/2021/01/17/SecureCRT%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E6%96%B9%E6%A1%88/"/>
+    <id>https://myboke.ink/2021/01/17/SecureCRT%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E6%96%B9%E6%A1%88/</id>
+    <published>2021-01-17T13:38:09.000Z</published>
+    <updated>2021-01-17T14:14:34.556Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;SecureCRT加载配色方案&quot;&gt;&lt;a href=&quot;#SecureCRT加载配色方案&quot; class=&quot;headerlink&quot; title=&quot;SecureCRT加载配色方案&quot;&gt;&lt;/a&gt;SecureCRT加载配色方案&lt;/h1&gt;&lt;h2 id=&quot;SecureCRT工具包&quot;</summary>
+      
+    
+    
+    
+    <category term="连接工具" scheme="https://myboke.ink/categories/%E8%BF%9E%E6%8E%A5%E5%B7%A5%E5%85%B7/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>xshell颜色方案</title>
+    <link href="https://myboke.ink/2021/01/17/xshell%E9%A2%9C%E8%89%B2%E6%96%B9%E6%A1%88/"/>
+    <id>https://myboke.ink/2021/01/17/xshell%E9%A2%9C%E8%89%B2%E6%96%B9%E6%A1%88/</id>
+    <published>2021-01-17T13:15:39.000Z</published>
+    <updated>2021-01-17T13:16:13.052Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;xshell的配置颜色方案&quot;&gt;&lt;a href=&quot;#xshell的配置颜色方案&quot; class=&quot;headerlink&quot; title=&quot;xshell的配置颜色方案&quot;&gt;&lt;/a&gt;xshell的配置颜色方案&lt;/h1&gt;&lt;h2 id=&quot;xshell配置颜色设置&quot;&gt;&lt;a href</summary>
+      
+    
+    
+    
+    <category term="连接工具" scheme="https://myboke.ink/categories/%E8%BF%9E%E6%8E%A5%E5%B7%A5%E5%85%B7/"/>
+    
+    
+    <category term="xshell" scheme="https://myboke.ink/tags/xshell/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>xshell设置</title>
+    <link href="https://myboke.ink/2021/01/17/xshell%E8%AE%BE%E7%BD%AE/"/>
+    <id>https://myboke.ink/2021/01/17/xshell%E8%AE%BE%E7%BD%AE/</id>
+    <published>2021-01-17T13:08:33.000Z</published>
+    <updated>2021-01-17T14:09:57.755Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;xshell安装及优化&quot;&gt;&lt;a href=&quot;#xshell安装及优化&quot; class=&quot;headerlink&quot; title=&quot;xshell安装及优化&quot;&gt;&lt;/a&gt;xshell安装及优化&lt;/h1&gt;&lt;h2 id=&quot;xshll版本说明&quot;&gt;&lt;a href=&quot;#xshll版本说</summary>
+      
+    
+    
+    
+    <category term="连接工具" scheme="https://myboke.ink/categories/%E8%BF%9E%E6%8E%A5%E5%B7%A5%E5%85%B7/"/>
+    
+    
+    <category term="xshell" scheme="https://myboke.ink/tags/xshell/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据通信基本原理</title>
+    <link href="https://myboke.ink/2021/01/17/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"/>
+    <id>https://myboke.ink/2021/01/17/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/</id>
+    <published>2021-01-17T12:59:13.000Z</published>
+    <updated>2021-01-17T13:21:06.937Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;数据通信基本原理&quot;&gt;&lt;a href=&quot;#数据通信基本原理&quot; class=&quot;headerlink&quot; title=&quot;数据通信基本原理&quot;&gt;&lt;/a&gt;数据通信基本原理&lt;/h1&gt;&lt;h2 id=&quot;什么是网络协议？&quot;&gt;&lt;a href=&quot;#什么是网络协议？&quot; class=&quot;head</summary>
+      
+    
+    
+    
+    <category term="路由交换" scheme="https://myboke.ink/categories/%E8%B7%AF%E7%94%B1%E4%BA%A4%E6%8D%A2/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>ARP实验</title>
+    <link href="https://myboke.ink/2021/01/17/ARP%E5%AE%9E%E9%AA%8C/"/>
+    <id>https://myboke.ink/2021/01/17/ARP%E5%AE%9E%E9%AA%8C/</id>
+    <published>2021-01-17T12:44:26.000Z</published>
+    <updated>2021-01-17T12:45:13.490Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;ARP实验&quot;&gt;&lt;a href=&quot;#ARP实验&quot; class=&quot;headerlink&quot; title=&quot;ARP实验&quot;&gt;&lt;/a&gt;ARP实验&lt;/h1&gt;&lt;h2 id=&quot;ARP代理&quot;&gt;&lt;a href=&quot;#ARP代理&quot; class=&quot;headerlink&quot; title=&quot;ARP</summary>
+      
+    
+    
+    
+    <category term="路由交换" scheme="https://myboke.ink/categories/%E8%B7%AF%E7%94%B1%E4%BA%A4%E6%8D%A2/"/>
+    
+    
+    <category term="ARP" scheme="https://myboke.ink/tags/ARP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ARP协议与原理</title>
+    <link href="https://myboke.ink/2021/01/17/ARP%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%8E%9F%E7%90%86/"/>
+    <id>https://myboke.ink/2021/01/17/ARP%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%8E%9F%E7%90%86/</id>
+    <published>2021-01-17T12:22:00.000Z</published>
+    <updated>2021-01-17T12:28:10.550Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;ARP协议与原理&quot;&gt;&lt;a href=&quot;#ARP协议与原理&quot; class=&quot;headerlink&quot; title=&quot;ARP协议与原理&quot;&gt;&lt;/a&gt;ARP协议与原理&lt;/h1&gt;&lt;h2 id=&quot;ARP概述&quot;&gt;&lt;a href=&quot;#ARP概述&quot; class=&quot;headerlink</summary>
+      
+    
+    
+    
+    <category term="路由交换" scheme="https://myboke.ink/categories/%E8%B7%AF%E7%94%B1%E4%BA%A4%E6%8D%A2/"/>
+    
+    
+    <category term="ARP" scheme="https://myboke.ink/tags/ARP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ICMP——ping工具</title>
+    <link href="https://myboke.ink/2021/01/17/ICMP%E2%80%94%E2%80%94ping%E5%B7%A5%E5%85%B7/"/>
+    <id>https://myboke.ink/2021/01/17/ICMP%E2%80%94%E2%80%94ping%E5%B7%A5%E5%85%B7/</id>
+    <published>2021-01-17T12:16:50.000Z</published>
+    <updated>2021-01-17T12:23:49.512Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;ICMP——ping工具&quot;&gt;&lt;a href=&quot;#ICMP——ping工具&quot; class=&quot;headerlink&quot; title=&quot;ICMP——ping工具&quot;&gt;&lt;/a&gt;ICMP——ping工具&lt;/h1&gt;&lt;h2 id=&quot;tcping工具&quot;&gt;&lt;a href=&quot;#tcpin</summary>
+      
+    
+    
+    
+    <category term="路由交换" scheme="https://myboke.ink/categories/%E8%B7%AF%E7%94%B1%E4%BA%A4%E6%8D%A2/"/>
+    
+    
+    <category term="ICMP" scheme="https://myboke.ink/tags/ICMP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ICMP——tracert与traceroute</title>
+    <link href="https://myboke.ink/2021/01/17/ICMP%E2%80%94%E2%80%94tracert%E4%B8%8Etraceroute/"/>
+    <id>https://myboke.ink/2021/01/17/ICMP%E2%80%94%E2%80%94tracert%E4%B8%8Etraceroute/</id>
+    <published>2021-01-17T12:12:08.000Z</published>
+    <updated>2021-01-17T12:23:23.845Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;ICMP——tracert与traceroute&quot;&gt;&lt;a href=&quot;#ICMP——tracert与traceroute&quot; class=&quot;headerlink&quot; title=&quot;ICMP——tracert与traceroute&quot;&gt;&lt;/a&gt;ICMP——tracert与</summary>
+      
+    
+    
+    
+    <category term="路由交换" scheme="https://myboke.ink/categories/%E8%B7%AF%E7%94%B1%E4%BA%A4%E6%8D%A2/"/>
+    
+    
+    <category term="ICMP" scheme="https://myboke.ink/tags/ICMP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>EVE-NG镜像转换</title>
+    <link href="https://myboke.ink/2021/01/17/EVE-NG%E9%95%9C%E5%83%8F%E8%BD%AC%E6%8D%A2/"/>
+    <id>https://myboke.ink/2021/01/17/EVE-NG%E9%95%9C%E5%83%8F%E8%BD%AC%E6%8D%A2/</id>
+    <published>2021-01-17T11:18:00.000Z</published>
+    <updated>2021-01-17T11:36:18.611Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;EVE-NG镜像转换&quot;&gt;&lt;a href=&quot;#EVE-NG镜像转换&quot; class=&quot;headerlink&quot; title=&quot;EVE-NG镜像转换&quot;&gt;&lt;/a&gt;EVE-NG镜像转换&lt;/h1&gt;&lt;h2 id=&quot;Linux-iso转换为QEMU-qcow2格式&quot;&gt;&lt;a href</summary>
+      
+    
+    
+    
+    <category term="路由交换" scheme="https://myboke.ink/categories/%E8%B7%AF%E7%94%B1%E4%BA%A4%E6%8D%A2/"/>
+    
+    
+    <category term="EVE-NG" scheme="https://myboke.ink/tags/EVE-NG/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>EVE-NG配置固定ip地址</title>
+    <link href="https://myboke.ink/2021/01/17/EVE-NG%E9%85%8D%E7%BD%AE%E5%9B%BA%E5%AE%9Aip%E5%9C%B0%E5%9D%80/"/>
+    <id>https://myboke.ink/2021/01/17/EVE-NG%E9%85%8D%E7%BD%AE%E5%9B%BA%E5%AE%9Aip%E5%9C%B0%E5%9D%80/</id>
+    <published>2021-01-17T11:05:54.000Z</published>
+    <updated>2021-01-17T11:32:23.371Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;EVH-NG配置固定IP地址&quot;&gt;&lt;a href=&quot;#EVH-NG配置固定IP地址&quot; class=&quot;headerlink&quot; title=&quot;EVH-NG配置固定IP地址&quot;&gt;&lt;/a&gt;EVH-NG配置固定IP地址&lt;/h1&gt;&lt;h2 id=&quot;编辑配置文件-etc-networ</summary>
+      
+    
+    
+    
+    <category term="路由交换" scheme="https://myboke.ink/categories/%E8%B7%AF%E7%94%B1%E4%BA%A4%E6%8D%A2/"/>
+    
+    
+    <category term="EVE-NG" scheme="https://myboke.ink/tags/EVE-NG/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ICMP——Ping</title>
+    <link href="https://myboke.ink/2021/01/17/ICMP%E2%80%94%E2%80%94Ping/"/>
+    <id>https://myboke.ink/2021/01/17/ICMP%E2%80%94%E2%80%94Ping/</id>
+    <published>2021-01-17T11:04:13.000Z</published>
+    <updated>2021-01-17T12:24:05.073Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;ICMP之——ping&quot;&gt;&lt;a href=&quot;#ICMP之——ping&quot; class=&quot;headerlink&quot; title=&quot;ICMP之——ping&quot;&gt;&lt;/a&gt;ICMP之——ping&lt;/h1&gt;&lt;h2 id=&quot;ping命令&quot;&gt;&lt;a href=&quot;#ping命令&quot; cla</summary>
+      
+    
+    
+    
+    <category term="路由交换" scheme="https://myboke.ink/categories/%E8%B7%AF%E7%94%B1%E4%BA%A4%E6%8D%A2/"/>
+    
+    
+    <category term="ICMP" scheme="https://myboke.ink/tags/ICMP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ICMP协议与原理</title>
+    <link href="https://myboke.ink/2021/01/17/ICMP%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%8E%9F%E7%90%86/"/>
+    <id>https://myboke.ink/2021/01/17/ICMP%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%8E%9F%E7%90%86/</id>
+    <published>2021-01-17T10:00:57.000Z</published>
+    <updated>2021-01-17T10:04:59.748Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;ICMP协议与原理&quot;&gt;&lt;a href=&quot;#ICMP协议与原理&quot; class=&quot;headerlink&quot; title=&quot;ICMP协议与原理&quot;&gt;&lt;/a&gt;ICMP协议与原理&lt;/h1&gt;&lt;h2 id=&quot;ICMP协议是什么？&quot;&gt;&lt;a href=&quot;#ICMP协议是什么？&quot; cla</summary>
+      
+    
+    
+    
+    <category term="路由交换" scheme="https://myboke.ink/categories/%E8%B7%AF%E7%94%B1%E4%BA%A4%E6%8D%A2/"/>
+    
+    
+    <category term="ICMP" scheme="https://myboke.ink/tags/ICMP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>DHCP协议与原理</title>
+    <link href="https://myboke.ink/2021/01/17/DHCP%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%8E%9F%E7%90%86/"/>
+    <id>https://myboke.ink/2021/01/17/DHCP%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%8E%9F%E7%90%86/</id>
+    <published>2021-01-17T09:49:41.000Z</published>
+    <updated>2021-01-17T10:04:37.727Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;DHCP协议与原理&quot;&gt;&lt;a href=&quot;#DHCP协议与原理&quot; class=&quot;headerlink&quot; title=&quot;DHCP协议与原理&quot;&gt;&lt;/a&gt;DHCP协议与原理&lt;/h1&gt;&lt;h2 id=&quot;DHCP介绍&quot;&gt;&lt;a href=&quot;#DHCP介绍&quot; class=&quot;head</summary>
+      
+    
+    
+    
+    <category term="路由交换" scheme="https://myboke.ink/categories/%E8%B7%AF%E7%94%B1%E4%BA%A4%E6%8D%A2/"/>
+    
+    
+    <category term="DHCP" scheme="https://myboke.ink/tags/DHCP/"/>
+    
+  </entry>
+  
+</feed>
