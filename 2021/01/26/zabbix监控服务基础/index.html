@@ -1,0 +1,338 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="zabbix监控服务基础"><meta name="keywords" content="zabbix"><meta name="author" content="Inaction"><meta name="copyright" content="Inaction"><title>zabbix监控服务基础 | Inaction's Blog</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script><link rel="dns-prefetch" href="https://hm.baidu.com"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?12b421fdad87d1edf2305ccb7229d2c1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><link rel="dns-prefetch" href="https://www.google-analytics.com"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'G-8RMJ1F8ETC', 'auto');
+ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  hexoVersion: '5.3.0'
+} </script><meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="Inaction's Blog" type="application/atom+xml">
+</head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#zabbix%E7%9B%91%E6%8E%A7%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.</span> <span class="toc-text">zabbix监控服务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E5%87%86%E5%A4%87"><span class="toc-number">1.1.</span> <span class="toc-text">部署准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zabbix%E7%9B%91%E6%8E%A7%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">zabbix监控基础架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%91%E6%8E%A7%E6%A6%82%E8%BF%B0"><span class="toc-number">1.3.</span> <span class="toc-text">监控概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Zabbix%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.3.1.</span> <span class="toc-text">Zabbix介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E7%9B%91%E6%8E%A7"><span class="toc-number">1.3.2.</span> <span class="toc-text">为什么要使用监控</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%91%E6%8E%A7%E6%9C%8D%E5%8A%A1%E5%B8%B8%E7%94%A8%E7%9A%84%E5%91%BD%E4%BB%A4"><span class="toc-number">1.3.3.</span> <span class="toc-text">监控服务常用的命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%85%A5%E6%89%8B%E7%9B%91%E6%8E%A7"><span class="toc-number">1.3.4.</span> <span class="toc-text">如何入手监控</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8shell%E6%9D%A5%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E7%9B%91%E6%8E%A7"><span class="toc-number">1.3.5.</span> <span class="toc-text">如何使用shell来实现服务器的监控</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zabbix%E9%83%A8%E7%BD%B2"><span class="toc-number">1.4.</span> <span class="toc-text">zabbix部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEzabbix-yum-%E4%BB%93%E5%BA%93"><span class="toc-number">1.4.1.</span> <span class="toc-text">配置zabbix(yum)仓库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85zabbix-%E6%9C%8D%E5%8A%A1%E7%AB%AF-%E3%80%81Msyql%E3%80%81zabbix-agent-%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">1.4.2.</span> <span class="toc-text">安装zabbix(服务端)、Msyql、zabbix-agent(客户端)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAzabbix%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BB%A5%E5%8F%8A%E7%94%A8%E6%88%B7"><span class="toc-number">1.4.3.</span> <span class="toc-text">创建zabbix数据库以及用户</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE%E5%80%BC%E5%88%B0%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD"><span class="toc-number">1.4.4.</span> <span class="toc-text">导入数据值到数据库中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%BE%91-etc-zabbix-zabbix-server-conf%E6%96%87%E4%BB%B6%EF%BC%8C%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.5.</span> <span class="toc-text">编辑&#x2F;etc&#x2F;zabbix&#x2F;zabbix-server.conf文件，修改数据库配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8zabbix%E6%9C%8D%E5%8A%A1%E8%BF%9B%E7%A8%8B%EF%BC%8C%E5%B9%B6%E5%8A%A0%E5%85%A5%E5%BC%80%E6%9C%BA%E8%87%AA%E5%8A%A8"><span class="toc-number">1.4.6.</span> <span class="toc-text">启动zabbix服务进程，并加入开机自动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEApache%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-etc-httpd-conf-d-zabbix-conf%EF%BC%8C%E4%BF%AE%E6%94%B9%E6%97%B6%E5%8C%BA%E5%B9%B6%E9%87%8D%E5%90%AFApache"><span class="toc-number">1.4.7.</span> <span class="toc-text">配置Apache的配置文件&#x2F;etc&#x2F;httpd&#x2F;conf.d&#x2F;zabbix.conf，修改时区并重启Apache</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WEB%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.5.</span> <span class="toc-text">WEB安装步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E6%89%93%E5%BC%80%E5%9C%B0%E5%9D%80%EF%BC%9A10-0-0-71-zabbix-setup-php"><span class="toc-number">1.5.1.</span> <span class="toc-text">浏览器打开地址：10.0.0.71&#x2F;zabbix&#x2F;setup.php</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A3%80%E6%9F%A5%E4%BE%9D%E8%B5%96%E9%A1%B9%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E5%BC%82%E5%B8%B8"><span class="toc-number">1.5.2.</span> <span class="toc-text">检查依赖项是否存在异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEzabbix%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.5.3.</span> <span class="toc-text">配置zabbix连接数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEzabbix-server%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E4%BF%A1%E6%81%AF%EF%BC%8C%E5%B9%B6%E7%A1%AE%E8%AE%A4%E6%A3%80%E6%9F%A5"><span class="toc-number">1.5.4.</span> <span class="toc-text">配置zabbix-server服务器的信息，并确认检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F"><span class="toc-number">1.5.5.</span> <span class="toc-text">安装成功</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BB%E5%BD%95zabbix"><span class="toc-number">1.5.6.</span> <span class="toc-text">登录zabbix</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E6%95%B4%E5%AD%97%E7%AC%A6%E9%9B%86%E4%B8%BA%E4%B8%AD%E6%96%87"><span class="toc-number">1.5.7.</span> <span class="toc-text">调整字符集为中文</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81"><span class="toc-number">1.5.8.</span> <span class="toc-text">修复中文乱码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zabbix%E5%BF%AB%E9%80%9F%E7%9B%91%E6%8E%A7%E4%B8%BB%E6%9C%BA"><span class="toc-number">1.6.</span> <span class="toc-text">zabbix快速监控主机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85zabbix-agent"><span class="toc-number">1.6.1.</span> <span class="toc-text">安装zabbix-agent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99zabbix-agent%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.6.2.</span> <span class="toc-text">编写zabbix-agent配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8zabbix-agent%E5%B9%B6%E6%A3%80%E6%9F%A5"><span class="toc-number">1.6.3.</span> <span class="toc-text">启动zabbix-agent并检查</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zabbix-web%E7%95%8C%E9%9D%A2%EF%BC%8C%E6%B7%BB%E5%8A%A0%E4%B8%BB%E6%9C%BA"><span class="toc-number">1.7.</span> <span class="toc-text">zabbix-web界面，添加主机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%91%E6%8E%A7%E4%B8%BB%E6%9C%BA"><span class="toc-number">1.8.</span> <span class="toc-text">自定义监控主机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%91%E6%8E%A7TCP11%E7%A7%8D%E7%8A%B6%E6%80%81%E9%9B%86"><span class="toc-number">1.8.1.</span> <span class="toc-text">监控TCP11种状态集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99zabbix%E7%9B%91%E6%8E%A7%E6%96%87%E4%BB%B6%EF%BC%88%E4%BC%A0%E5%8F%82%E5%BD%A2%E5%BC%8F%EF%BC%89"><span class="toc-number">1.8.2.</span> <span class="toc-text">编写zabbix监控文件（传参形式）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zabbix-server%E7%AB%AF%E5%91%BD%E4%BB%A4%E8%A1%8C%E8%BF%9B%E8%A1%8C%E6%B5%8B%E8%AF%95"><span class="toc-number">1.8.3.</span> <span class="toc-text">zabbix-server端命令行进行测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web01%E4%B8%BB%E6%9C%BA%E4%B8%AD%E5%90%84%E4%B8%AA%E9%80%89%E9%A1%B9%E8%AF%B4%E6%98%8E"><span class="toc-number">1.8.4.</span> <span class="toc-text">web01主机中各个选项说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web%E7%95%8C%E9%9D%A2%E6%B7%BB%E5%8A%A0%EF%BC%8C%E5%88%9B%E5%BB%BA%E6%96%B0%E7%9B%91%E6%8E%A7%E9%A1%B9ESTABLISHED%E3%80%81LISTEN%E3%80%81TIME-WAIT"><span class="toc-number">1.8.5.</span> <span class="toc-text">web界面添加，创建新监控项ESTABLISHED、LISTEN、TIME_WAIT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%8B%E9%9A%86%E7%9B%91%E6%8E%A7%E9%A1%B9"><span class="toc-number">1.8.6.</span> <span class="toc-text">克隆监控项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%9B%BE%E5%BD%A2"><span class="toc-number">1.8.7.</span> <span class="toc-text">创建图形</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">1.8.8.</span> <span class="toc-text">设置触发器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%9A%E5%90%88%E5%9B%BE%E5%BD%A2"><span class="toc-number">1.8.9.</span> <span class="toc-text">聚合图形</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6"><span class="toc-number">1.9.</span> <span class="toc-text">邮件报警</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E5%8F%91%E4%BB%B6%E4%BA%BA"><span class="toc-number">1.9.1.</span> <span class="toc-text">定义发件人</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E6%94%B6%E4%BB%B6%E4%BA%BA"><span class="toc-number">1.9.2.</span> <span class="toc-text">定义收件人</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8A%A5%E8%AD%A6%E5%86%85%E5%AE%B9"><span class="toc-number">1.9.3.</span> <span class="toc-text">自定义报警内容</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%AE%E4%BF%A1%E6%8A%A5%E8%AD%A6"><span class="toc-number">1.10.</span> <span class="toc-text">微信报警</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E9%87%8C%E7%9A%84%E8%84%9A%E6%9C%AC%E7%9B%AE%E5%BD%95%E8%B7%AF%E5%BE%84"><span class="toc-number">1.10.1.</span> <span class="toc-text">查看配置文件里的脚本目录路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%8F%91%E4%BF%A1%E4%BA%BA"><span class="toc-number">1.10.2.</span> <span class="toc-text">配置发信人</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BB%E5%BD%95%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7%E6%B7%BB%E5%8A%A0%E8%B4%A6%E5%8F%B7"><span class="toc-number">1.10.3.</span> <span class="toc-text">登录企业微信公众号添加账号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%88%90%E5%91%98"><span class="toc-number">1.10.4.</span> <span class="toc-text">添加成员</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E8%87%AA%E5%B7%B1%E7%9A%84%E8%B4%A6%E5%8F%B7"><span class="toc-number">1.10.5.</span> <span class="toc-text">查看自己的账号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E8%84%9A%E6%9C%AC%E9%87%8C%E7%9A%84%E4%BF%A1%E6%81%AF"><span class="toc-number">1.10.6.</span> <span class="toc-text">修改脚本里的信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E4%BF%A1%E6%81%AF%E6%B5%8B%E8%AF%95"><span class="toc-number">1.10.7.</span> <span class="toc-text">发信息测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AE%E4%BF%A1%E5%8F%B7%E6%9F%A5%E7%9C%8B"><span class="toc-number">1.10.8.</span> <span class="toc-text">微信号查看</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E5%88%B0%E6%95%B4%E4%B8%AA%E5%BE%AE%E4%BF%A1%E7%BB%84"><span class="toc-number">1.10.9.</span> <span class="toc-text">发送到整个微信组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zabbix-web%E9%85%8D%E7%BD%AE%E6%94%B6%E4%BF%A1%E4%BA%BA"><span class="toc-number">1.10.10.</span> <span class="toc-text">zabbix-web配置收信人</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-1-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E6%9D%BF"><span class="toc-number">1.11.</span> <span class="toc-text">10.1 自定义模板</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%A8%A1%E6%9D%BF"><span class="toc-number">1.11.1.</span> <span class="toc-text">创建模板</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%90%84%E4%B8%AA%E9%80%89%E9%A1%B9"><span class="toc-number">1.11.2.</span> <span class="toc-text">创建各个选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E6%A8%A1%E6%9D%BF"><span class="toc-number">1.11.3.</span> <span class="toc-text">应用模板</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%96%B0%E7%9A%84%E4%B8%BB%E6%9C%BA%E5%AF%BC%E5%85%A5%E6%A8%A1%E6%9D%BF"><span class="toc-number">1.11.4.</span> <span class="toc-text">创建新的主机导入模板</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A3%B0%E9%9F%B3%E6%8A%A5%E8%AD%A6"><span class="toc-number">1.12.</span> <span class="toc-text">声音报警</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#web%E9%A1%B5%E9%9D%A2%E6%8F%90%E7%A4%BA%E5%A3%B0%E9%9F%B3%E6%8A%A5%E8%AD%A6"><span class="toc-number">1.12.1.</span> <span class="toc-text">web页面提示声音报警</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E6%8A%A5%E8%AD%A6%E9%93%83%E5%A3%B0"><span class="toc-number">1.12.2.</span> <span class="toc-text">修改报警铃声</span></a></li></ol></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/melody-favicon.ico"></div><div class="author-info__name text-center">Inaction</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">32</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">15</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">5</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Friend Links</div><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="http://www.ji4n.cn/">Jen</a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(img/beijing.png)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">Inaction's Blog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search"></i><span> Search</span></a></span></div><div id="post-info"><div id="post-title">zabbix监控服务基础</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2021-01-26</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Linux/">Linux</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="zabbix监控服务"><a href="#zabbix监控服务" class="headerlink" title="zabbix监控服务"></a>zabbix监控服务</h1><h2 id="部署准备"><a href="#部署准备" class="headerlink" title="部署准备"></a>部署准备</h2><table>
+<thead>
+<tr>
+<th>主机名</th>
+<th>外网IP</th>
+<th>内网IP</th>
+<th>服务器</th>
+<th>服务安装</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>zabbix</td>
+<td>10.0.0.71</td>
+<td>172.16.1.71</td>
+<td>zabbix服务</td>
+<td>zabbix-server-mysql、zabbix-web-mysql、mariadb-server</td>
+</tr>
+<tr>
+<td>web01</td>
+<td>10.0.0.7</td>
+<td>172.16.1.7</td>
+<td>nginx服务</td>
+<td>zabbix-agent</td>
+</tr>
+</tbody></table>
+<h2 id="zabbix监控基础架构"><a href="#zabbix监控基础架构" class="headerlink" title="zabbix监控基础架构"></a>zabbix监控基础架构</h2><p><strong>zabbix-agent(数据采集) –&gt; zabbix-server(数据分析|报警) –&gt; 数据库(数据存储) &lt;–zabbix-web(数据显示)</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160150.png"></p>
+<h2 id="监控概述"><a href="#监控概述" class="headerlink" title="监控概述"></a>监控概述</h2><h3 id="Zabbix介绍"><a href="#Zabbix介绍" class="headerlink" title="Zabbix介绍"></a>Zabbix介绍</h3><blockquote>
+<ol>
+<li>zabbix是一个企业级分布式开源监控解决方案。能够监控众多网络参数和服务器的健康度、完整性。</li>
+<li>zabbix使用灵活的告警机制，允许用户为几乎任何事件配置基于邮件的告警、可以快速响应服务器问题。</li>
+<li>zabbix基于存储的数据提供出色的报表和数据可视化功能</li>
+<li>zabbix server可以通过SNMP，zabbix agent，ping，端口监视等方法提供对远程服务器/网络状态的监视，数据收集等功能，它可以运行在Linux，Solaris，HP-UX，AIX，Free BSD，Open BSD，OS X等平台上</li>
+</ol>
+</blockquote>
+<h3 id="为什么要使用监控"><a href="#为什么要使用监控" class="headerlink" title="为什么要使用监控"></a>为什么要使用监控</h3><blockquote>
+<ol>
+<li>对系统不断的进行实时监控</li>
+<li>实时反馈系统当前状态</li>
+<li>保证服务可靠性安全性</li>
+<li>保证业务持续稳定运行</li>
+</ol>
+</blockquote>
+<h3 id="监控服务常用的命令"><a href="#监控服务常用的命令" class="headerlink" title="监控服务常用的命令"></a>监控服务常用的命令</h3><p><strong>1. CPU：top、htop、glances(万能命令)</strong></p>
+<blockquote>
+<p>监控什么：</p>
+<p>​     us: user state         — 用户态信息 40%<br>​     sy: system state     — 内核态信息 40%<br>​     id: idle                  — 空闲状态 20%</p>
+</blockquote>
+<p><strong>2. 内存：top htop free</strong></p>
+<blockquote>
+<p> 监控什么：</p>
+<p> ​    内存可用率<br> ​    swap空间使用情况</p>
+</blockquote>
+<p><strong>3. 磁盘：df iotop(检查磁盘Io消耗)glance是</strong></p>
+<blockquote>
+<p>监控什么：</p>
+<p>​     磁盘的使用情况<br>​     磁盘的io消耗<br>​     可用使用命令测试：dd if=/dev/zero of=/tmp/1G bs=100M count=10</p>
+</blockquote>
+<p><strong>4. 网络：iftop glances</strong></p>
+<blockquote>
+<p>监控什么：</p>
+<p>​      网络带宽使用情况</p>
+</blockquote>
+<p><strong>5. 进程：top htop ps glances</strong></p>
+<blockquote>
+<p>监控什么：</p>
+<p>​     占用内存情况 Tomcat（Java）— 内存占满（内存可能会溢出）— 服务就会出现僵死（重启服务）<br>​     占用CPU情况：mysql服务较占用CPU资源 </p>
+</blockquote>
+<p><strong>6. 负载：w top uptime glances</strong></p>
+<blockquote>
+<p>监控什么：</p>
+<p>​      10分钟负载&lt;CPU内核数<br>​      15分钟负载</p>
+</blockquote>
+<h3 id="如何入手监控"><a href="#如何入手监控" class="headerlink" title="如何入手监控"></a>如何入手监控</h3><blockquote>
+<ol>
+<li>硬件监控：路由器，交换机，防火墙</li>
+<li>系统监控:CPU，内容，磁盘，网络，进程，TCP</li>
+<li>服务监控：nginx、php、tomcat、Redis、memcache、MySQL</li>
+<li>web监控：请求时间，响应时间，加载时间</li>
+<li>日志监控：ELK（收集、存储、分析、展示）日志易</li>
+<li>安全监控：Friewalld、WAF(nginx+lua)、安全宝、牛盾云、安全狗</li>
+<li>网络监控：smokeping多机房</li>
+<li>业务监控：活动引入多少流量，产生多少注册量，带来多大价值</li>
+</ol>
+</blockquote>
+<h3 id="如何使用shell来实现服务器的监控"><a href="#如何使用shell来实现服务器的监控" class="headerlink" title="如何使用shell来实现服务器的监控"></a>如何使用shell来实现服务器的监控</h3><p><strong>1. 如何监控内存使用情况：</strong></p>
+<blockquote>
+<p>正常使用情况：内存使用率高于80%<br>异常使用情况：内存使用率低于20%，则发送报警<br>使用命令测试：free -m |awk ‘NR==2{print int($NF/$2*100)”%”}’</p>
+</blockquote>
+<p><strong>2. 编写脚本:</strong></p>
+<blockquote>
+<p>编写脚本之前需要配置邮件服务，路径：/etc/mail.rc；配置以下参数，smtp需要自行去qq邮箱中开启 </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ vi /etc/mail.rc           </span><br><span class="line">set from=qq邮箱 smtp=smtp.qq.com    </span><br><span class="line">set smtp-auth-user=qq邮箱 smtp-auth-password=授权码（不是密码） smtp-auth=login</span><br></pre></td></tr></table></figure>
+
+<p>配置脚本文件：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cat check_memory<span class="selector-class">.sh</span></span><br><span class="line">#!/bin/bash</span><br><span class="line">num=`free -m |awk &#x27;NR==2&#123;print int($NF/$2*100)&quot;%&quot;&#125;&#x27;`</span><br><span class="line">if <span class="selector-attr">[ &quot;$num -lt 20%&quot; ]</span>;then</span><br><span class="line">   echo &quot;memory error&quot;|mail -s memory-appear-abnormal qq邮箱</span><br><span class="line">fi </span><br></pre></td></tr></table></figure>
+<p><strong>3. 收到的报警邮箱如图</strong></p>
+</blockquote>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126152833.png"></p>
+<h2 id="zabbix部署"><a href="#zabbix部署" class="headerlink" title="zabbix部署"></a>zabbix部署</h2><h3 id="配置zabbix-yum-仓库"><a href="#配置zabbix-yum-仓库" class="headerlink" title="配置zabbix(yum)仓库"></a>配置zabbix(yum)仓库</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ rpm -ivh https://mirror.tuna.tsinghua.edu.cn/zabbix/zabbix/4.0/rhel/7/x86_64/zabbix-agent-4.0.11-1.el7.x86_64.rpm            //清华源</span><br><span class="line">$ sed -i &#x27;s#repo.zabbix.com#mirrors.tuna.tsinghua.edu.cn/zabbix#g&#x27; /etc/yum.repos.d/zabbix.repo</span><br></pre></td></tr></table></figure>
+<h3 id="安装zabbix-服务端-、Msyql、zabbix-agent-客户端"><a href="#安装zabbix-服务端-、Msyql、zabbix-agent-客户端" class="headerlink" title="安装zabbix(服务端)、Msyql、zabbix-agent(客户端)"></a>安装zabbix(服务端)、Msyql、zabbix-agent(客户端)</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ yum install -y zabbix-server-mysql zabbix-web-mysql zabbix-agent mariadb-server</span><br><span class="line">$ systemctl start mariadb.service &amp;&amp; systemctl enable mariadb.service</span><br></pre></td></tr></table></figure>
+<h3 id="创建zabbix数据库以及用户"><a href="#创建zabbix数据库以及用户" class="headerlink" title="创建zabbix数据库以及用户"></a>创建zabbix数据库以及用户</h3><p><strong>创建用户密码</strong></p>
+<blockquote>
+<ol>
+<li>第一种选择，初始化设置：mysql_secure_installation (初始化可以设置密码，也可以去除MySQL多余的用户和库)</li>
+<li>第二种选择，直接设置密码：mysqladmin password 123456</li>
+</ol>
+</blockquote>
+<p><strong>创建mysql中的库和用户</strong></p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ mysql -uroot -p123456</span><br><span class="line">MariaDB <span class="selector-attr">[(none)]</span>&gt; create database zabbix character set utf8 collate utf8_bin;                    <span class="comment">//创建zabbix库</span></span><br><span class="line">MariaDB <span class="selector-attr">[(none)]</span>&gt; grant all privileges on zabbix.* to zabbix<span class="keyword">@localhost</span> identified by <span class="string">&#x27;zabbix&#x27;</span>;   <span class="comment">//创建用户</span></span><br><span class="line">MariaDB <span class="selector-attr">[(none)]</span>&gt; flush privileges;                                                              <span class="comment">//刷新</span></span><br></pre></td></tr></table></figure>
+<h3 id="导入数据值到数据库中"><a href="#导入数据值到数据库中" class="headerlink" title="导入数据值到数据库中"></a>导入数据值到数据库中</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ zcat /usr/share/doc/zabbix-server-mysql-4.0.24/create.sql.gz | mysql -uzabbix -pzabbix zabbix</span><br></pre></td></tr></table></figure>
+<h3 id="编辑-etc-zabbix-zabbix-server-conf文件，修改数据库配置"><a href="#编辑-etc-zabbix-zabbix-server-conf文件，修改数据库配置" class="headerlink" title="编辑/etc/zabbix/zabbix-server.conf文件，修改数据库配置"></a>编辑/etc/zabbix/zabbix-server.conf文件，修改数据库配置</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ grep &quot;^DB&quot; /etc/zabbix/zabbix_server.conf </span><br><span class="line">DBHost=localhost</span><br><span class="line">DBName=zabbix</span><br><span class="line">DBUser=zabbix</span><br><span class="line">DBPassword=zabbix</span><br></pre></td></tr></table></figure>
+<h3 id="启动zabbix服务进程，并加入开机自动"><a href="#启动zabbix服务进程，并加入开机自动" class="headerlink" title="启动zabbix服务进程，并加入开机自动"></a>启动zabbix服务进程，并加入开机自动</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl start zabbix-server.service </span><br><span class="line">$ systemctl enable zabbix-server.service</span><br></pre></td></tr></table></figure>
+<h3 id="配置Apache的配置文件-etc-httpd-conf-d-zabbix-conf，修改时区并重启Apache"><a href="#配置Apache的配置文件-etc-httpd-conf-d-zabbix-conf，修改时区并重启Apache" class="headerlink" title="配置Apache的配置文件/etc/httpd/conf.d/zabbix.conf，修改时区并重启Apache"></a>配置Apache的配置文件/etc/httpd/conf.d/zabbix.conf，修改时区并重启Apache</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ grep &quot;Shanghai&quot; /etc/httpd/conf.d/zabbix.conf </span><br><span class="line"><span class="selector-tag">php_value</span> <span class="selector-tag">date</span><span class="selector-class">.timezone</span> <span class="selector-tag">Asia</span>/<span class="selector-tag">Shanghai</span>             //修改的位置</span><br><span class="line"></span><br><span class="line">$ systemctl start httpd &amp;&amp; systemctl enable httpd</span><br></pre></td></tr></table></figure>
+<h2 id="WEB安装步骤"><a href="#WEB安装步骤" class="headerlink" title="WEB安装步骤"></a>WEB安装步骤</h2><h3 id="浏览器打开地址：10-0-0-71-zabbix-setup-php"><a href="#浏览器打开地址：10-0-0-71-zabbix-setup-php" class="headerlink" title="浏览器打开地址：10.0.0.71/zabbix/setup.php"></a>浏览器打开地址：10.0.0.71/zabbix/setup.php</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126154515.png"></p>
+<h3 id="检查依赖项是否存在异常"><a href="#检查依赖项是否存在异常" class="headerlink" title="检查依赖项是否存在异常"></a>检查依赖项是否存在异常</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126154533.png"></p>
+<h3 id="配置zabbix连接数据库"><a href="#配置zabbix连接数据库" class="headerlink" title="配置zabbix连接数据库"></a>配置zabbix连接数据库</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126154549.png"></p>
+<h3 id="配置zabbix-server服务器的信息，并确认检查"><a href="#配置zabbix-server服务器的信息，并确认检查" class="headerlink" title="配置zabbix-server服务器的信息，并确认检查"></a>配置zabbix-server服务器的信息，并确认检查</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126154606.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160124.png"></p>
+<h3 id="安装成功"><a href="#安装成功" class="headerlink" title="安装成功"></a>安装成功</h3><p><strong>提示已经安装了zabbix。配置文件/etc/zabbix/web/zabbix.conf.php已被创建</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160129.png"></p>
+<h3 id="登录zabbix"><a href="#登录zabbix" class="headerlink" title="登录zabbix"></a>登录zabbix</h3><p><strong>默认登录zabbix-web的用户名Admin，密码zabbix</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160132.png"></p>
+<h3 id="调整字符集为中文"><a href="#调整字符集为中文" class="headerlink" title="调整字符集为中文"></a>调整字符集为中文</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160135.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160146.png"></p>
+<h3 id="修复中文乱码"><a href="#修复中文乱码" class="headerlink" title="修复中文乱码"></a>修复中文乱码</h3><p><strong>打开图形之后发现语言为乱码，原因是缺少了字体</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160147.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160148.png"></p>
+<p><strong>解决方法，安装字体并替换现有字体</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ yum install wqy-microhei-fonts -y      <span class="comment">//默认情况下Centos7是安装的</span></span><br><span class="line">$ cp /usr/share/fonts/wqy-microhei/wqy-microhei.ttc /usr/share/zabbix/assets/fonts/graphfont.ttf</span><br></pre></td></tr></table></figure>
+<p><strong>刷新之后，就会变成中文了</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160149.png"></p>
+<h2 id="zabbix快速监控主机"><a href="#zabbix快速监控主机" class="headerlink" title="zabbix快速监控主机"></a>zabbix快速监控主机</h2><h3 id="安装zabbix-agent"><a href="#安装zabbix-agent" class="headerlink" title="安装zabbix-agent"></a>安装zabbix-agent</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ rpm -ivh https://mirror.tuna.tsinghua.edu.cn/zabbix/zabbix/4.0/rhel/7/x86_64/zabbix-agent-4.0.11-1.el7.x86_64.rpm</span><br><span class="line">$ yum install -y zabbix-agent</span><br></pre></td></tr></table></figure>
+<h3 id="编写zabbix-agent配置文件"><a href="#编写zabbix-agent配置文件" class="headerlink" title="编写zabbix-agent配置文件"></a>编写zabbix-agent配置文件</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ cat /etc/zabbix/zabbix_agentd.conf</span><br><span class="line">PidFile=/var/run/zabbix/zabbix_agentd.pid</span><br><span class="line">LogFile=/var/log/zabbix/zabbix_agentd.log</span><br><span class="line">LogFileSize=0</span><br><span class="line">Server=10.0.0.71</span><br><span class="line">ServerActive=10.0.0.71</span><br><span class="line">Hostname=web01</span><br><span class="line">Include=/etc/zabbix/zabbix_agentd.d/*.conf</span><br></pre></td></tr></table></figure>
+<h3 id="启动zabbix-agent并检查"><a href="#启动zabbix-agent并检查" class="headerlink" title="启动zabbix-agent并检查"></a>启动zabbix-agent并检查</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl start zabbix-agent.service </span><br><span class="line">$ systemctl enable zabbix-agent.service</span><br><span class="line">$ netstat -lntup|grep 10050</span><br><span class="line"><span class="selector-tag">tcp</span>        0      0 0.0.0.0<span class="selector-pseudo">:10050</span>           0.0.0.0:*               <span class="selector-tag">LISTEN</span>      5468/<span class="selector-tag">zabbix_agentd</span>  </span><br><span class="line"><span class="selector-tag">tcp6</span>       0      0 :<span class="selector-pseudo">::10050</span>                :::*                    <span class="selector-tag">LISTEN</span>      5468/<span class="selector-tag">zabbix_agentd</span> </span><br></pre></td></tr></table></figure>
+<h2 id="zabbix-web界面，添加主机"><a href="#zabbix-web界面，添加主机" class="headerlink" title="zabbix-web界面，添加主机"></a>zabbix-web界面，添加主机</h2><p><strong>创建主机</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160151.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160152.png"></p>
+<p><strong>添加默认的模板，Template OS Linux</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160153.png"></p>
+<p><strong>检查是否正常启动</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160154.png"></p>
+<h2 id="自定义监控主机"><a href="#自定义监控主机" class="headerlink" title="自定义监控主机"></a>自定义监控主机</h2><h3 id="监控TCP11种状态集"><a href="#监控TCP11种状态集" class="headerlink" title="监控TCP11种状态集"></a>监控TCP11种状态集</h3><p><strong>命令行实现</strong></p>
+<blockquote>
+<ul>
+<li><p>第一种方法：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ netstat -ant|grep -c LISTEN</span><br><span class="line">  21</span><br><span class="line">$ netstat -ant|grep -c  ESTABLISHED</span><br><span class="line">  2</span><br><span class="line">$ netstat -ant|grep -c TIME_WAIT</span><br><span class="line">  0</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>第二种方法：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ netstat -ant|awk &#x27;NR&gt;2&#123;print $6&#125;&#x27;|grep &quot;ESTABLISHED&quot;|wc -l</span><br><span class="line">$ netstat -ant|awk &#x27;NR&gt;2&#123;print $6&#125;&#x27;|grep &quot;LISTEN&quot;|wc -l</span><br><span class="line">$ netstat -ant|awk &#x27;NR&gt;2&#123;print $6&#125;&#x27;|grep &quot;TIME_WAIT&quot;|wc -l</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<h3 id="编写zabbix监控文件（传参形式）"><a href="#编写zabbix监控文件（传参形式）" class="headerlink" title="编写zabbix监控文件（传参形式）"></a>编写zabbix监控文件（传参形式）</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ cat /etc/zabbix/zabbix_agentd.d/tcp.status.conf                                     //自己创建</span><br><span class="line">UserParameter=ESTABLISHED,netstat -ant|awk &#x27;NR&gt;2&#123;print $6&#125;&#x27;|grep &quot;ESTABLISHED&quot;|wc -l</span><br><span class="line">UserParameter=LISTEN,netstat -ant|awk &#x27;NR&gt;2&#123;print $6&#125;&#x27;|grep &quot;LISTEN&quot;|wc -l</span><br><span class="line">UserParameter=TIME_WAIT,netstat -ant|awk &#x27;NR&gt;2&#123;print $6&#125;&#x27;|grep &quot;TIME_WAIT&quot;|wc -l</span><br></pre></td></tr></table></figure>
+<h3 id="zabbix-server端命令行进行测试"><a href="#zabbix-server端命令行进行测试" class="headerlink" title="zabbix-server端命令行进行测试"></a>zabbix-server端命令行进行测试</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ yum install zabbix-get.x86_64 -y </span><br><span class="line">$ zabbix_get -s 10.0.0.7 -k LISTEN</span><br><span class="line">21</span><br><span class="line">$ zabbix_get -s 10.0.0.7 -k ESTABLISHED</span><br><span class="line">3</span><br><span class="line">$ zabbix_get -s 10.0.0.7 -k TIME_WAIT</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>PS：如果在server端使用zabbix-get测试成功了，那么在web页面也就可以成功</strong></p>
+</blockquote>
+<h3 id="web01主机中各个选项说明"><a href="#web01主机中各个选项说明" class="headerlink" title="web01主机中各个选项说明"></a>web01主机中各个选项说明</h3><blockquote>
+<ul>
+<li>应用集：模板中的标签</li>
+<li>监控项：你要监控的内容（项目1，项目2）</li>
+<li>触发器：设定某个监控项报警的阈值条件</li>
+<li>图形：方便查看</li>
+<li>聚集图形：把多个图形放在一起展示</li>
+<li>模板：将一类的监控项汇总在一起，单独保存成一个集合，可以直接被其他主机调用</li>
+</ul>
+</blockquote>
+<h3 id="web界面添加，创建新监控项ESTABLISHED、LISTEN、TIME-WAIT"><a href="#web界面添加，创建新监控项ESTABLISHED、LISTEN、TIME-WAIT" class="headerlink" title="web界面添加，创建新监控项ESTABLISHED、LISTEN、TIME_WAIT"></a>web界面添加，创建新监控项ESTABLISHED、LISTEN、TIME_WAIT</h3><p><strong>创建ESTABLISHED监控项，其余可以使用克隆监控项</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160155.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160156.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160157.png"></p>
+<h3 id="克隆监控项"><a href="#克隆监控项" class="headerlink" title="克隆监控项"></a>克隆监控项</h3><p><strong>由于TCP有多种状态，需要添加多个监控项，所以我们可以选择使用克隆快速创建</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160158.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160159.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160200.png"></p>
+<blockquote>
+<p><strong>PS：其他状态监控项依次添加即可</strong></p>
+</blockquote>
+<h3 id="创建图形"><a href="#创建图形" class="headerlink" title="创建图形"></a>创建图形</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160201.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160202.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160203.png"></p>
+<p><strong>查看图形</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160204.png"></p>
+<h3 id="设置触发器"><a href="#设置触发器" class="headerlink" title="设置触发器"></a>设置触发器</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160205.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160206.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160207.png"></p>
+<p><strong>刷新多几次，报警就会出现了</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160208.png"></p>
+<h3 id="聚合图形"><a href="#聚合图形" class="headerlink" title="聚合图形"></a>聚合图形</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160209.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160210.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160211.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160212.png"></p>
+<h2 id="邮件报警"><a href="#邮件报警" class="headerlink" title="邮件报警"></a>邮件报警</h2><h3 id="定义发件人"><a href="#定义发件人" class="headerlink" title="定义发件人"></a>定义发件人</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160213.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160214.png"></p>
+<h3 id="定义收件人"><a href="#定义收件人" class="headerlink" title="定义收件人"></a>定义收件人</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160215.png"></p>
+<p><strong>配置只需要开启动作即可</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160216.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160217.png"></p>
+<p><strong>收到邮件</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160218.png"></p>
+<h3 id="自定义报警内容"><a href="#自定义报警内容" class="headerlink" title="自定义报警内容"></a>自定义报警内容</h3><p><strong>定制报警内容：报警邮件标题可以使用默认信息，也可使用如何中文报警内容</strong></p>
+<blockquote>
+<p>zabbix官网：<a target="_blank" rel="noopener" href="https://www.zabbix.com/documentation/4.0/zh/manual/appendix/macros/supported_by_location">https://www.zabbix.com/documentation/4.0/zh/manual/appendix/macros/supported_by_location</a></p>
+</blockquote>
+<p><strong>发送警告：</strong></p>
+<blockquote>
+<p>名称：Action-Email<br>默认标题：故障{TRIGGER.STATUS},服务器:{HOSTNAME1}发生: {TRIGGER.NAME}故障!<br>告警主机:{HOSTNAME1}<br>告警时间:{EVENT.DATE} {EVENT.TIME}<br>告警等级:{TRIGGER.SEVERITY}<br>告警信息: {TRIGGER.NAME}<br>告警项目:{TRIGGER.KEY1}<br>问题详情:{ITEM.NAME}:{ITEM.VALUE}<br>当前状态:{TRIGGER.STATUS}:{ITEM.VALUE1}<br>事件ID:{EVENT.ID}　</p>
+</blockquote>
+<p><strong>恢复警告：</strong></p>
+<blockquote>
+<p>恢复标题：恢复{TRIGGER.STATUS}, 服务器:{HOSTNAME1}: {TRIGGER.NAME}已恢复!<br>恢复信息：<br>告警主机:{HOSTNAME1}<br>告警时间:{EVENT.DATE} {EVENT.TIME}<br>告警等级:{TRIGGER.SEVERITY}<br>告警信息: {TRIGGER.NAME}<br>告警项目:{TRIGGER.KEY1}<br>问题详情:{ITEM.NAME}:{ITEM.VALUE}<br>当前状态:{TRIGGER.STATUS}:{ITEM.VALUE1}<br>事件ID:{EVENT.ID}</p>
+</blockquote>
+<p><strong>收到的内容</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160219.png"></p>
+<h2 id="微信报警"><a href="#微信报警" class="headerlink" title="微信报警"></a>微信报警</h2><h3 id="查看配置文件里的脚本目录路径"><a href="#查看配置文件里的脚本目录路径" class="headerlink" title="查看配置文件里的脚本目录路径"></a>查看配置文件里的脚本目录路径</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ grep &quot;^AlertScriptsPath&quot; /etc/zabbix/zabbix_server.conf </span><br><span class="line">AlertScriptsPath=/usr/lib/zabbix/alertscripts</span><br></pre></td></tr></table></figure>
+<p><strong>将wenxin.py放在zabbix特定目录</strong></p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ chmod u+x weixin<span class="selector-class">.py</span> </span><br><span class="line">$ ll weixin<span class="selector-class">.py</span></span><br><span class="line">-rwxr--r-- 1 root root 1114 Aug 28 10:<span class="number">37</span> weixin.py</span><br></pre></td></tr></table></figure>
+<p><strong>脚本内容</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">$ cat weixin.py </span><br><span class="line">#!/<span class="selector-tag">usr</span>/<span class="selector-tag">bin</span>/<span class="selector-tag">env</span> <span class="selector-tag">python</span></span><br><span class="line"><span class="selector-id">#-</span>*<span class="selector-tag">-</span> <span class="selector-tag">coding</span>: <span class="selector-tag">utf-8</span> <span class="selector-tag">-</span>*<span class="selector-tag">-</span></span><br><span class="line"></span><br><span class="line"><span class="selector-tag">import</span> <span class="selector-tag">requests</span></span><br><span class="line"><span class="selector-tag">import</span> <span class="selector-tag">sys</span></span><br><span class="line"><span class="selector-tag">import</span> <span class="selector-tag">os</span></span><br><span class="line"><span class="selector-tag">import</span> <span class="selector-tag">json</span></span><br><span class="line"><span class="selector-tag">import</span> <span class="selector-tag">logging</span></span><br><span class="line"> </span><br><span class="line">logging.basicConfig(level = logging.DEBUG, format = &#x27;%(asctime)s, %(filename)s, %(levelname)s, %(message)s&#x27;,</span><br><span class="line">       datefmt = &#x27;%a, %d %b %Y %H:%M:%S&#x27;,</span><br><span class="line">       filename = os.path.join(&#x27;/tmp&#x27;,&#x27;weixin.log&#x27;),</span><br><span class="line">       filemode = &#x27;a&#x27;)</span><br><span class="line"></span><br><span class="line">corpid=&#x27;微信企业号corpid&#x27;</span><br><span class="line">appsecret=&#x27;应用的Secret&#x27;</span><br><span class="line">agentid=应用的id</span><br><span class="line"></span><br><span class="line">#获取<span class="selector-tag">accesstoken</span></span><br><span class="line">token_url=&#x27;https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=&#x27; + corpid + &#x27;&amp;corpsecret=&#x27; + appsecret</span><br><span class="line">req=requests.get(token_url)</span><br><span class="line">accesstoken=req.json()[&#x27;access_token&#x27;]</span><br><span class="line"></span><br><span class="line">#发送消息</span><br><span class="line">msgsend_url=&#x27;https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=&#x27; + accesstoken</span><br><span class="line"></span><br><span class="line">touser=sys.argv[1]</span><br><span class="line">subject=sys.argv[2]</span><br><span class="line">#toparty=&#x27;3|4|5|6&#x27;</span><br><span class="line">message=sys.argv[2] + &quot;\n\n&quot; +sys.argv[3]</span><br><span class="line"></span><br><span class="line">params=&#123;</span><br><span class="line">    &quot;<span class="selector-tag">touser</span>&quot;: <span class="selector-tag">touser</span>,</span><br><span class="line">    #&quot;<span class="selector-tag">toparty</span>&quot;: <span class="selector-tag">toparty</span>,</span><br><span class="line">    &quot;<span class="selector-tag">msgtype</span>&quot;: &quot;<span class="selector-tag">text</span>&quot;,</span><br><span class="line">    &quot;<span class="selector-tag">agentid</span>&quot;: <span class="selector-tag">agentid</span>,</span><br><span class="line">    &quot;<span class="selector-tag">text</span>&quot;: &#123;</span><br><span class="line">         &quot;content&quot;: message</span><br><span class="line">     &#125;,</span><br><span class="line">    &quot;<span class="selector-tag">safe</span>&quot;<span class="selector-pseudo">:0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">req=requests.post(msgsend_url, data=json.dumps(params))</span><br><span class="line"></span><br><span class="line">logging.info(&#x27;sendto:&#x27; + touser + &#x27;;;subject:&#x27; + subject + &#x27;;;message:&#x27; + message)</span><br></pre></td></tr></table></figure>
+<h3 id="配置发信人"><a href="#配置发信人" class="headerlink" title="配置发信人"></a>配置发信人</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160220.png">    </p>
+<p><strong>脚本参数</strong></p>
+<blockquote>
+<p>  {ALERT.SENDTO}<br>  {ALERT.SUBJECT}<br>  {ALERT.MESSAGE}</p>
+</blockquote>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160221.png"></p>
+<h3 id="登录企业微信公众号添加账号"><a href="#登录企业微信公众号添加账号" class="headerlink" title="登录企业微信公众号添加账号"></a>登录企业微信公众号添加账号</h3><p><strong>1. 注册账号</strong></p>
+<blockquote>
+<p>路径：<a target="_blank" rel="noopener" href="https://work.weixin.qq.com/wework_admin/loginpage_wx">https://work.weixin.qq.com/wework_admin/loginpage_wx</a></p>
+</blockquote>
+<p><strong>2. 登录后在应用管理创建新应用</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160222.png"></p>
+<p><strong>3. 上传logo，填写应用名称，应用介绍等</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160223.png"></p>
+<p><strong>4. 查看启动应用</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160224.png"></p>
+<p><strong>4. 接口调用测试</strong></p>
+<blockquote>
+<p>路径：<a target="_blank" rel="noopener" href="http://work.weixin.qq.com/api/devtools/devtool.php">http://work.weixin.qq.com/api/devtools/devtool.php</a><br>corpid：填写的是企业ID，位置–&gt;我的企业–&gt;企业信息–&gt;往下拉到最后就可看到<br>corpsecret：填写之前创建应用得到的Secret值</p>
+</blockquote>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160225.png"></p>
+<h3 id="添加成员"><a href="#添加成员" class="headerlink" title="添加成员"></a>添加成员</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160226.png"></p>
+<h3 id="查看自己的账号"><a href="#查看自己的账号" class="headerlink" title="查看自己的账号"></a>查看自己的账号</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160227.png"></p>
+<h3 id="修改脚本里的信息"><a href="#修改脚本里的信息" class="headerlink" title="修改脚本里的信息"></a>修改脚本里的信息</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ cat weixin.py </span><br><span class="line">corpid=&#x27;微信企业号corpid&#x27;</span><br><span class="line">appsecret=&#x27;应用的Secret&#x27;</span><br><span class="line">agentid=应用的id</span><br></pre></td></tr></table></figure>
+<h3 id="发信息测试"><a href="#发信息测试" class="headerlink" title="发信息测试"></a>发信息测试</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ pwd</span><br><span class="line">/<span class="selector-tag">usr</span>/<span class="selector-tag">lib</span>/<span class="selector-tag">zabbix</span>/<span class="selector-tag">alertscripts</span></span><br><span class="line">$ python weixin.py 你的账号 &#x27;发信测试&#x27;  ‘微信测试消息’</span><br></pre></td></tr></table></figure>
+<p><strong>如果出现以下报错，则需要安装python-pip，接着安装request模块</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126163319.png"></p>
+ <figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ yum install python-pip -y</span><br><span class="line">$ pip install requests</span><br></pre></td></tr></table></figure>
+<h3 id="微信号查看"><a href="#微信号查看" class="headerlink" title="微信号查看"></a>微信号查看</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160229.png"></p>
+<h3 id="发送到整个微信组"><a href="#发送到整个微信组" class="headerlink" title="发送到整个微信组"></a>发送到整个微信组</h3><p><strong>1. 导出通讯录</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160230.png"></p>
+<p><strong>2. 将导出Excel表格中的的账号，写入文件中</strong></p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ pwd</span><br><span class="line">/usr/lib/zabbix/alertscripts</span><br><span class="line">$ cat test<span class="selector-class">.txt</span></span><br><span class="line">FanW</span><br><span class="line">FanXig</span><br></pre></td></tr></table></figure>
+<p><strong>3. 编写for.sh脚本</strong></p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cat for<span class="selector-class">.sh</span> </span><br><span class="line">#!/bin/bash</span><br><span class="line">for <span class="selector-tag">i</span> in $(cat test<span class="selector-class">.txt</span>)</span><br><span class="line">do</span><br><span class="line">   ./weixin.py $&#123;i&#125; $1 $2 </span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p><strong>4. 查看微信信息</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160231.png"></p>
+<h3 id="zabbix-web配置收信人"><a href="#zabbix-web配置收信人" class="headerlink" title="zabbix-web配置收信人"></a>zabbix-web配置收信人</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160232.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160233.png"></p>
+<p><strong>查看微信信息</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160234.png"></p>
+<h2 id="10-1-自定义模板"><a href="#10-1-自定义模板" class="headerlink" title="10.1 自定义模板"></a>10.1 自定义模板</h2><h3 id="创建模板"><a href="#创建模板" class="headerlink" title="创建模板"></a>创建模板</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160235.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160236.png"></p>
+<h3 id="创建各个选项"><a href="#创建各个选项" class="headerlink" title="创建各个选项"></a>创建各个选项</h3><p><strong>创建应用集,监控项,触发器,图形都跟上面讲解的一样,只是现在定义模板来给其他主机使用,这样可以方便许多</strong></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160237.png"></p>
+<h3 id="应用模板"><a href="#应用模板" class="headerlink" title="应用模板"></a>应用模板</h3><blockquote>
+<ol>
+<li><p>创建另一台web主机，命名为web02，地址10.0.0.8</p>
+</li>
+<li><p>设置yum源: rpm -ivh <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/zabbix/zabbix/4.0/rhel/5/x86_64/zabbix-release-4.0-1.el5.noarch.rpm">https://mirrors.tuna.tsinghua.edu.cn/zabbix/zabbix/4.0/rhel/5/x86_64/zabbix-release-4.0-1.el5.noarch.rpm</a></p>
+</li>
+<li><p>下载客户端: yum install -y zabbix-agent</p>
+</li>
+<li><p>创建监控项</p>
+ <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ cat tcp<span class="selector-class">.status</span><span class="selector-class">.conf</span> </span><br><span class="line">UserParameter=ESTABLISHED,netstat -ant|awk &#x27;NR&gt;2&#123;print $6&#125;&#x27;|grep &quot;ESTABLISHED&quot;|wc -l</span><br><span class="line">UserParameter=LISTEN,netstat -ant|awk &#x27;NR&gt;2&#123;print $6&#125;&#x27;|grep &quot;LISTEN&quot;|wc -l</span><br><span class="line">UserParameter=TIME_WAIT,netstat -ant|awk &#x27;NR&gt;2&#123;print $6&#125;&#x27;|grep &quot;TIME_WAIT&quot;|wc -l</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</blockquote>
+<h3 id="创建新的主机导入模板"><a href="#创建新的主机导入模板" class="headerlink" title="创建新的主机导入模板"></a>创建新的主机导入模板</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160238.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160239.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160240.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160241.png"></p>
+<h2 id="声音报警"><a href="#声音报警" class="headerlink" title="声音报警"></a>声音报警</h2><h3 id="web页面提示声音报警"><a href="#web页面提示声音报警" class="headerlink" title="web页面提示声音报警"></a>web页面提示声音报警</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210126160242.png"></p>
+<h3 id="修改报警铃声"><a href="#修改报警铃声" class="headerlink" title="修改报警铃声"></a>修改报警铃声</h3><blockquote>
+<ol>
+<li><p>找到文件所在目录</p>
+<ul>
+<li><p>首先在页面按F12—用箭头–选中模式Elements(元素)–再点击页面中的alarm_disaster.mp3</p>
+</li>
+<li><p>使用find命令</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ find / -type f -name &#x27;alarm_average.mp3&#x27;</span><br><span class="line">/usr/share/zabbix/audio/alarm_average.mp3</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>将原有声音文件做替换</p>
+  <figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv yingyue<span class="selector-class">.mp3</span> alarm_disaster<span class="selector-class">.mp3</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>需要清除浏览器缓存，再进行测试</p>
+</li>
+</ol>
+</blockquote>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Inaction</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://myboke.ink/2021/01/26/zabbix监控服务基础/">https://myboke.ink/2021/01/26/zabbix监控服务基础/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/zabbix/">zabbix</a></div><div class="social-share pull-right"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script><nav id="pagination"><div class="prev-post pull-left"><a href="/2021/01/26/zabbix%E6%95%85%E9%9A%9C%E5%A4%84%E7%90%86/"><i class="fa fa-chevron-left">  </i><span>zabbix故障处理</span></a></div><div class="next-post pull-right"><a href="/2021/01/25/hexo%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/"><span>hexo搭建静态博客</span><i class="fa fa-chevron-right"></i></a></div></nav><div id="gitalk-container"></div><script>var gitalk = new Gitalk({
+  clientID: '6cea6a646bff1a0d5f5b',
+  clientSecret: '6e9ef08f31f505d416bc0afe2d304808e9063627',
+  repo: 'zsjmal2316.github.io',
+  owner: 'zsjmal2316',
+  admin: 'zsjmal2316',
+  id: md5(decodeURI(location.pathname)),
+  language: 'en'
+})
+gitalk.render('gitalk-container')</script></div></div><footer class="footer-bg" style="background-image: url(img/beijing.png)"><div class="layout" id="footer"><div class="copyright">&copy;2020 - 2021 By Inaction</div><div class="framework-info"><span>Driven - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.0"></script><script src="/js/fancybox.js?version=1.9.0"></script><script src="/js/sidebar.js?version=1.9.0"></script><script src="/js/copy.js?version=1.9.0"></script><script src="/js/fireworks.js?version=1.9.0"></script><script src="/js/transition.js?version=1.9.0"></script><script src="/js/scroll.js?version=1.9.0"></script><script src="/js/head.js?version=1.9.0"></script><script src="/js/search/local-search.js"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>Powered by</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>
