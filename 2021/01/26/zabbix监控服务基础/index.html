@@ -328,9 +328,13 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <ol>
 <li>找到文件所在目录</li>
 </ol>
-<p>首先在页面按F12—用箭头–选中模式Elements(元素)–再点击页面中的alarm_disaster.mp3</p>
-<p>使用find命令</p>
-<pre><code> <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ find / -type f -name &#x27;alarm_average.mp3&#x27;</span><br><span class="line">/usr/share/zabbix/audio/alarm_average.mp3</span><br></pre></td></tr></table></figure></code></pre>
+<ul>
+<li><p>首先在页面按F12—用箭头–选中模式Elements(元素)–再点击页面中的alarm_disaster.mp3</p>
+</li>
+<li><p>使用find命令</p>
+   <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ find / -type f -name &#x27;alarm_average.mp3&#x27;</span><br><span class="line">/usr/share/zabbix/audio/alarm_average.mp3</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 <ol start="2">
 <li><p>将原有声音文件做替换</p>
   <figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv yingyue<span class="selector-class">.mp3</span> alarm_disaster<span class="selector-class">.mp3</span></span><br></pre></td></tr></table></figure>
