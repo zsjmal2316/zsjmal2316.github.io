@@ -6,7 +6,7 @@
   <link href="https://myboke.ink/atom.xml" rel="self"/>
   
   <link href="https://myboke.ink/"/>
-  <updated>2021-01-26T11:26:25.250Z</updated>
+  <updated>2021-02-03T06:29:48.802Z</updated>
   <id>https://myboke.ink/</id>
   
   <author>
@@ -15,6 +15,78 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ansible-roles</title>
+    <link href="https://myboke.ink/2021/02/03/ansible-roles/"/>
+    <id>https://myboke.ink/2021/02/03/ansible-roles/</id>
+    <published>2021-02-03T06:26:07.000Z</published>
+    <updated>2021-02-03T06:29:48.802Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;ansible-roles&quot;&gt;&lt;a href=&quot;#ansible-roles&quot; class=&quot;headerlink&quot; title=&quot;ansible-roles&quot;&gt;&lt;/a&gt;ansible-roles&lt;/h1&gt;&lt;h2 id=&quot;ansible程序roles–规范&quot;&gt;&lt;a</summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="https://myboke.ink/categories/Linux/"/>
+    
+    <category term="ansible" scheme="https://myboke.ink/categories/Linux/ansible/"/>
+    
+    
+    <category term="ansible" scheme="https://myboke.ink/tags/ansible/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ansible-playbook</title>
+    <link href="https://myboke.ink/2021/02/03/ansible-playbook/"/>
+    <id>https://myboke.ink/2021/02/03/ansible-playbook/</id>
+    <published>2021-02-03T06:26:01.000Z</published>
+    <updated>2021-02-03T06:28:53.032Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;ansible-playbook&quot;&gt;&lt;a href=&quot;#ansible-playbook&quot; class=&quot;headerlink&quot; title=&quot;ansible-playbook&quot;&gt;&lt;/a&gt;ansible-playbook&lt;/h1&gt;&lt;h2 id=&quot;剧本介绍&quot;&gt;&lt;a </summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="https://myboke.ink/categories/Linux/"/>
+    
+    <category term="ansible" scheme="https://myboke.ink/categories/Linux/ansible/"/>
+    
+    
+    <category term="ansible" scheme="https://myboke.ink/tags/ansible/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ansible入门</title>
+    <link href="https://myboke.ink/2021/02/03/ansible%E5%85%A5%E9%97%A8/"/>
+    <id>https://myboke.ink/2021/02/03/ansible%E5%85%A5%E9%97%A8/</id>
+    <published>2021-02-03T06:25:41.000Z</published>
+    <updated>2021-02-03T06:27:48.299Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;Ansible自动化&quot;&gt;&lt;a href=&quot;#Ansible自动化&quot; class=&quot;headerlink&quot; title=&quot;Ansible自动化&quot;&gt;&lt;/a&gt;Ansible自动化&lt;/h1&gt;&lt;h2 id=&quot;Ansible介绍&quot;&gt;&lt;a href=&quot;#Ansible介绍&quot; c</summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="https://myboke.ink/categories/Linux/"/>
+    
+    <category term="ansible" scheme="https://myboke.ink/categories/Linux/ansible/"/>
+    
+    
+    <category term="ansible" scheme="https://myboke.ink/tags/ansible/"/>
+    
+  </entry>
   
   <entry>
     <title>zabbix服务深入扩展</title>
@@ -383,72 +455,6 @@
     
     
     <category term="ICMP" scheme="https://myboke.ink/tags/ICMP/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ICMP——tracert与traceroute</title>
-    <link href="https://myboke.ink/2021/01/17/ICMP%E2%80%94%E2%80%94tracert%E4%B8%8Etraceroute/"/>
-    <id>https://myboke.ink/2021/01/17/ICMP%E2%80%94%E2%80%94tracert%E4%B8%8Etraceroute/</id>
-    <published>2021-01-17T12:12:08.000Z</published>
-    <updated>2021-01-17T12:23:23.845Z</updated>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;ICMP——tracert与traceroute&quot;&gt;&lt;a href=&quot;#ICMP——tracert与traceroute&quot; class=&quot;headerlink&quot; title=&quot;ICMP——tracert与traceroute&quot;&gt;&lt;/a&gt;ICMP——tracert与</summary>
-      
-    
-    
-    
-    <category term="路由交换" scheme="https://myboke.ink/categories/%E8%B7%AF%E7%94%B1%E4%BA%A4%E6%8D%A2/"/>
-    
-    
-    <category term="ICMP" scheme="https://myboke.ink/tags/ICMP/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>EVE-NG镜像转换</title>
-    <link href="https://myboke.ink/2021/01/17/EVE-NG%E9%95%9C%E5%83%8F%E8%BD%AC%E6%8D%A2/"/>
-    <id>https://myboke.ink/2021/01/17/EVE-NG%E9%95%9C%E5%83%8F%E8%BD%AC%E6%8D%A2/</id>
-    <published>2021-01-17T11:18:00.000Z</published>
-    <updated>2021-01-17T11:36:18.611Z</updated>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;EVE-NG镜像转换&quot;&gt;&lt;a href=&quot;#EVE-NG镜像转换&quot; class=&quot;headerlink&quot; title=&quot;EVE-NG镜像转换&quot;&gt;&lt;/a&gt;EVE-NG镜像转换&lt;/h1&gt;&lt;h2 id=&quot;Linux-iso转换为QEMU-qcow2格式&quot;&gt;&lt;a href</summary>
-      
-    
-    
-    
-    <category term="路由交换" scheme="https://myboke.ink/categories/%E8%B7%AF%E7%94%B1%E4%BA%A4%E6%8D%A2/"/>
-    
-    
-    <category term="EVE-NG" scheme="https://myboke.ink/tags/EVE-NG/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>EVE-NG配置固定ip地址</title>
-    <link href="https://myboke.ink/2021/01/17/EVE-NG%E9%85%8D%E7%BD%AE%E5%9B%BA%E5%AE%9Aip%E5%9C%B0%E5%9D%80/"/>
-    <id>https://myboke.ink/2021/01/17/EVE-NG%E9%85%8D%E7%BD%AE%E5%9B%BA%E5%AE%9Aip%E5%9C%B0%E5%9D%80/</id>
-    <published>2021-01-17T11:05:54.000Z</published>
-    <updated>2021-01-17T11:32:23.371Z</updated>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;EVH-NG配置固定IP地址&quot;&gt;&lt;a href=&quot;#EVH-NG配置固定IP地址&quot; class=&quot;headerlink&quot; title=&quot;EVH-NG配置固定IP地址&quot;&gt;&lt;/a&gt;EVH-NG配置固定IP地址&lt;/h1&gt;&lt;h2 id=&quot;编辑配置文件-etc-networ</summary>
-      
-    
-    
-    
-    <category term="路由交换" scheme="https://myboke.ink/categories/%E8%B7%AF%E7%94%B1%E4%BA%A4%E6%8D%A2/"/>
-    
-    
-    <category term="EVE-NG" scheme="https://myboke.ink/tags/EVE-NG/"/>
     
   </entry>
   
