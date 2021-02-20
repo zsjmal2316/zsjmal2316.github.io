@@ -6,7 +6,7 @@
   <link href="https://myboke.ink/atom.xml" rel="self"/>
   
   <link href="https://myboke.ink/"/>
-  <updated>2021-02-03T06:36:15.898Z</updated>
+  <updated>2021-02-20T08:01:51.243Z</updated>
   <id>https://myboke.ink/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MySQL概述与部署安装-1</title>
+    <link href="https://myboke.ink/2021/02/20/MySQL%E6%A6%82%E8%BF%B0%E4%B8%8E%E9%83%A8%E7%BD%B2%E5%AE%89%E8%A3%85-1/"/>
+    <id>https://myboke.ink/2021/02/20/MySQL%E6%A6%82%E8%BF%B0%E4%B8%8E%E9%83%A8%E7%BD%B2%E5%AE%89%E8%A3%85-1/</id>
+    <published>2021-02-20T07:54:52.000Z</published>
+    <updated>2021-02-20T08:01:51.243Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;MySQL概述与部署安装&quot;&gt;&lt;a href=&quot;#MySQL概述与部署安装&quot; class=&quot;headerlink&quot; title=&quot;MySQL概述与部署安装&quot;&gt;&lt;/a&gt;MySQL概述与部署安装&lt;/h1&gt;&lt;h2 id=&quot;MySQL概述&quot;&gt;&lt;a href=&quot;#MySQL概</summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="https://myboke.ink/categories/Linux/"/>
+    
+    <category term="MySQL" scheme="https://myboke.ink/categories/Linux/MySQL/"/>
+    
+    
+    <category term="MySQL" scheme="https://myboke.ink/tags/MySQL/"/>
+    
+  </entry>
   
   <entry>
     <title>ansible-roles</title>
@@ -445,28 +469,6 @@
     
     
     <category term="ARP" scheme="https://myboke.ink/tags/ARP/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ICMP——ping工具</title>
-    <link href="https://myboke.ink/2021/01/17/ICMP%E2%80%94%E2%80%94ping%E5%B7%A5%E5%85%B7/"/>
-    <id>https://myboke.ink/2021/01/17/ICMP%E2%80%94%E2%80%94ping%E5%B7%A5%E5%85%B7/</id>
-    <published>2021-01-17T12:16:50.000Z</published>
-    <updated>2021-01-17T12:23:49.512Z</updated>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;ICMP——ping工具&quot;&gt;&lt;a href=&quot;#ICMP——ping工具&quot; class=&quot;headerlink&quot; title=&quot;ICMP——ping工具&quot;&gt;&lt;/a&gt;ICMP——ping工具&lt;/h1&gt;&lt;h2 id=&quot;tcping工具&quot;&gt;&lt;a href=&quot;#tcpin</summary>
-      
-    
-    
-    
-    <category term="路由交换" scheme="https://myboke.ink/categories/%E8%B7%AF%E7%94%B1%E4%BA%A4%E6%8D%A2/"/>
-    
-    
-    <category term="ICMP" scheme="https://myboke.ink/tags/ICMP/"/>
     
   </entry>
   
