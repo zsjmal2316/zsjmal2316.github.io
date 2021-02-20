@@ -6,7 +6,7 @@
   <link href="https://myboke.ink/atom.xml" rel="self"/>
   
   <link href="https://myboke.ink/"/>
-  <updated>2021-02-03T06:29:48.802Z</updated>
+  <updated>2021-02-03T06:36:15.898Z</updated>
   <id>https://myboke.ink/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://myboke.ink/2021/02/03/ansible-roles/"/>
     <id>https://myboke.ink/2021/02/03/ansible-roles/</id>
     <published>2021-02-03T06:26:07.000Z</published>
-    <updated>2021-02-03T06:29:48.802Z</updated>
+    <updated>2021-02-03T06:36:15.898Z</updated>
     
     
       
@@ -45,7 +45,7 @@
     <link href="https://myboke.ink/2021/02/03/ansible-playbook/"/>
     <id>https://myboke.ink/2021/02/03/ansible-playbook/</id>
     <published>2021-02-03T06:26:01.000Z</published>
-    <updated>2021-02-03T06:28:53.032Z</updated>
+    <updated>2021-02-03T06:40:13.616Z</updated>
     
     
       
@@ -69,7 +69,7 @@
     <link href="https://myboke.ink/2021/02/03/ansible%E5%85%A5%E9%97%A8/"/>
     <id>https://myboke.ink/2021/02/03/ansible%E5%85%A5%E9%97%A8/</id>
     <published>2021-02-03T06:25:41.000Z</published>
-    <updated>2021-02-03T06:27:48.299Z</updated>
+    <updated>2021-02-04T05:44:30.177Z</updated>
     
     
       
@@ -93,7 +93,7 @@
     <link href="https://myboke.ink/2021/01/26/zabbix%E6%9C%8D%E5%8A%A1%E6%B7%B1%E5%85%A5%E6%89%A9%E5%B1%95/"/>
     <id>https://myboke.ink/2021/01/26/zabbix%E6%9C%8D%E5%8A%A1%E6%B7%B1%E5%85%A5%E6%89%A9%E5%B1%95/</id>
     <published>2021-01-26T11:10:46.000Z</published>
-    <updated>2021-01-26T11:26:25.250Z</updated>
+    <updated>2021-02-03T06:33:02.356Z</updated>
     
     
       
@@ -105,6 +105,8 @@
     
     <category term="Linux" scheme="https://myboke.ink/categories/Linux/"/>
     
+    <category term="zabbix" scheme="https://myboke.ink/categories/Linux/zabbix/"/>
+    
     
     <category term="zabbix" scheme="https://myboke.ink/tags/zabbix/"/>
     
@@ -115,7 +117,7 @@
     <link href="https://myboke.ink/2021/01/26/zabbix%E6%95%85%E9%9A%9C%E5%A4%84%E7%90%86/"/>
     <id>https://myboke.ink/2021/01/26/zabbix%E6%95%85%E9%9A%9C%E5%A4%84%E7%90%86/</id>
     <published>2021-01-26T09:20:39.000Z</published>
-    <updated>2021-01-26T11:35:01.054Z</updated>
+    <updated>2021-02-03T06:32:39.343Z</updated>
     
     
       
@@ -127,6 +129,8 @@
     
     <category term="Linux" scheme="https://myboke.ink/categories/Linux/"/>
     
+    <category term="zabbix" scheme="https://myboke.ink/categories/Linux/zabbix/"/>
+    
     
     <category term="zabbix" scheme="https://myboke.ink/tags/zabbix/"/>
     
@@ -137,7 +141,7 @@
     <link href="https://myboke.ink/2021/01/26/zabbix%E7%9B%91%E6%8E%A7%E6%9C%8D%E5%8A%A1%E5%9F%BA%E7%A1%80/"/>
     <id>https://myboke.ink/2021/01/26/zabbix%E7%9B%91%E6%8E%A7%E6%9C%8D%E5%8A%A1%E5%9F%BA%E7%A1%80/</id>
     <published>2021-01-26T09:03:09.000Z</published>
-    <updated>2021-01-26T11:44:13.131Z</updated>
+    <updated>2021-02-03T06:33:22.683Z</updated>
     
     
       
@@ -148,6 +152,8 @@
     
     
     <category term="Linux" scheme="https://myboke.ink/categories/Linux/"/>
+    
+    <category term="zabbix" scheme="https://myboke.ink/categories/Linux/zabbix/"/>
     
     
     <category term="zabbix" scheme="https://myboke.ink/tags/zabbix/"/>
@@ -203,7 +209,7 @@
     <link href="https://myboke.ink/2021/01/21/firewalld%E5%BA%94%E7%94%A8%E6%93%8D%E4%BD%9C/"/>
     <id>https://myboke.ink/2021/01/21/firewalld%E5%BA%94%E7%94%A8%E6%93%8D%E4%BD%9C/</id>
     <published>2021-01-21T13:21:09.000Z</published>
-    <updated>2021-01-21T13:56:06.181Z</updated>
+    <updated>2021-02-03T06:46:37.088Z</updated>
     
     
       
@@ -215,6 +221,8 @@
     
     <category term="Linux" scheme="https://myboke.ink/categories/Linux/"/>
     
+    <category term="防火墙" scheme="https://myboke.ink/categories/Linux/%E9%98%B2%E7%81%AB%E5%A2%99/"/>
+    
     
     <category term="firewalld" scheme="https://myboke.ink/tags/firewalld/"/>
     
@@ -225,7 +233,7 @@
     <link href="https://myboke.ink/2021/01/21/iptables%E5%BA%94%E7%94%A8%E6%93%8D%E4%BD%9C/"/>
     <id>https://myboke.ink/2021/01/21/iptables%E5%BA%94%E7%94%A8%E6%93%8D%E4%BD%9C/</id>
     <published>2021-01-21T06:37:57.000Z</published>
-    <updated>2021-01-21T07:06:26.783Z</updated>
+    <updated>2021-02-03T06:46:15.563Z</updated>
     
     
       
@@ -237,6 +245,8 @@
     
     <category term="Linux" scheme="https://myboke.ink/categories/Linux/"/>
     
+    <category term="防火墙" scheme="https://myboke.ink/categories/Linux/%E9%98%B2%E7%81%AB%E5%A2%99/"/>
+    
     
     <category term="iptables" scheme="https://myboke.ink/tags/iptables/"/>
     
@@ -247,7 +257,7 @@
     <link href="https://myboke.ink/2021/01/17/rsync%E5%85%A8%E7%BD%91%E5%A4%87%E4%BB%BD/"/>
     <id>https://myboke.ink/2021/01/17/rsync%E5%85%A8%E7%BD%91%E5%A4%87%E4%BB%BD/</id>
     <published>2021-01-17T14:37:59.000Z</published>
-    <updated>2021-01-17T14:52:36.108Z</updated>
+    <updated>2021-02-03T06:47:20.338Z</updated>
     
     
       
@@ -258,6 +268,8 @@
     
     
     <category term="Linux" scheme="https://myboke.ink/categories/Linux/"/>
+    
+    <category term="rsync" scheme="https://myboke.ink/categories/Linux/rsync/"/>
     
     
     <category term="rsync" scheme="https://myboke.ink/tags/rsync/"/>
