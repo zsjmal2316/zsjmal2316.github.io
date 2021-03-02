@@ -554,8 +554,8 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 </ul>
 </blockquote>
 <p><strong>事务开始到事务提交，以断电后磁盘和内存是如何恢复的</strong></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210209002618811.png"></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210209002637150.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210302101841199.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210302101857768.png"></p>
 <p><strong>语言描述情况：我们做一个事务，begin;update;commit</strong></p>
 <blockquote>
 <ol>
@@ -586,7 +586,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <li>实现一致性快照，配置隔离级别保证MVCC（多版本并发控制），读和写的操作不会互相伤害</li>
 </ul>
 </blockquote>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210209210223919.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210302101959088.png"></p>
 <h3 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h3><p>“锁”顾名思义就是锁定的意思。</p>
 <p><strong>锁的作用是什么</strong></p>
 <p>在事务ACID过程中，“锁”和“隔离级别”一起来实现“I”隔离性和”C” 一致性 </p>
@@ -616,52 +616,48 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">select</span> @<span class="keyword">@transaction_isolation</span>;</span><br><span class="line">+<span class="selector-tag">-------------------------</span>+</span><br><span class="line">| @@transaction_isolation |</span><br><span class="line">+<span class="selector-tag">-------------------------</span>+</span><br><span class="line">| REPEATABLE-READ         |</span><br><span class="line">+<span class="selector-tag">-------------------------</span>+</span><br></pre></td></tr></table></figure>
 <p><strong>设置隔离级别</strong></p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ vi /etc/my.cnf </span><br><span class="line">transaction_isolation=read-uncommitted</span><br><span class="line">#transaction_isolation=read-committed</span><br><span class="line">#transaction_isolation=REPEATABLE-READ</span><br></pre></td></tr></table></figure>
-<blockquote>
 <p>transaction_isolation=read-uncommitted：读未提交，可脏读，一般不易出现</p>
+<blockquote>
 <ul>
 <li><p>操作之前，需要查看自己是否开启自动提交</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">select</span> @<span class="keyword">@autocommit</span>;</span><br><span class="line"> +<span class="selector-tag">--------------</span>+</span><br><span class="line"> | @@autocommit |</span><br><span class="line"> +<span class="selector-tag">--------------</span>+</span><br><span class="line"> |            0 |</span><br><span class="line"> +<span class="selector-tag">--------------</span>+</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">select</span> @<span class="keyword">@autocommit</span>;</span><br><span class="line">  +<span class="selector-tag">--------------</span>+</span><br><span class="line">  | @@autocommit |</span><br><span class="line">  +<span class="selector-tag">--------------</span>+</span><br><span class="line">  |            0 |</span><br><span class="line">  +<span class="selector-tag">--------------</span>+</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>如果是自动提交，则修改为不自动提交</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">  </span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>set autocommit=0</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">  </span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; set autocommit=0</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>测试</p>
 <p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210209211215566.png"></p>
 </li>
 </ul>
 </blockquote>
-<blockquote>
 <p>transaction_isolation=read-committed：读已提交,可能出现幻读,可以防止脏读</p>
+<blockquote>
 <ul>
-<li><p>rc方式如何解决幻读</p>
+<li><p>RC方式如何解决幻读</p>
 <p>创建表的时候建一个主键，主键会创建GAP+NextLock锁，阻止幻读</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">create</span> <span class="selector-tag">table</span> <span class="selector-tag">pp</span>(<span class="selector-tag">id</span> <span class="selector-tag">int</span> <span class="selector-tag">primary</span> <span class="selector-tag">key</span> <span class="selector-tag">not</span> <span class="selector-tag">null</span>,<span class="selector-tag">name</span> <span class="selector-tag">varchar</span>(10));</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">create</span> <span class="selector-tag">table</span> <span class="selector-tag">pp</span>(<span class="selector-tag">id</span> <span class="selector-tag">int</span> <span class="selector-tag">primary</span> <span class="selector-tag">key</span> <span class="selector-tag">not</span> <span class="selector-tag">null</span>,<span class="selector-tag">name</span> <span class="selector-tag">varchar</span>(10));</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>测试</p>
 <p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210209221501258.png"></p>
 </li>
 </ul>
 </blockquote>
-<blockquote>
 <p>transaction_isolation=REPEATABLE-READ：可重复读，功能是防止“幻读”现象，利用的是undo的快照技术+GAP（间隙锁）+ NextLock（下键锁）</p>
+<blockquote>
 <ul>
 <li><p>RR模式可能出现的幻读</p>
 <ol>
 <li><p>左边创建一个表，插入几行数据，然后提交</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">create</span> <span class="selector-tag">table</span> <span class="selector-tag">tt</span>(<span class="selector-tag">id</span> <span class="selector-tag">int</span> <span class="selector-tag">primary</span> <span class="selector-tag">key</span> <span class="selector-tag">not</span> <span class="selector-tag">null</span>, <span class="selector-tag">name</span> <span class="selector-tag">vaarchar</span>(10));</span><br><span class="line">insert into tt values(1,&#x27;pp&#x27;),(2,&#x27;cc&#x27;),(3,&#x27;tt&#x27;);</span><br><span class="line"><span class="selector-tag">commit</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">create</span> <span class="selector-tag">table</span> <span class="selector-tag">tt</span>(<span class="selector-tag">id</span> <span class="selector-tag">int</span> <span class="selector-tag">primary</span> <span class="selector-tag">key</span> <span class="selector-tag">not</span> <span class="selector-tag">null</span>, <span class="selector-tag">name</span> <span class="selector-tag">vaarchar</span>(10));</span><br><span class="line"> &gt; insert into tt values(1,&#x27;pp&#x27;),(2,&#x27;cc&#x27;),(3,&#x27;tt&#x27;);</span><br><span class="line"> &gt; <span class="selector-tag">commit</span>;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>右边也提交（不然看不到数据）</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">commit</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">commit</span>;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>左边继续插入一行数据,然后提交(右边是看不见数据的)</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">insert into tt values(4,&#x27;bb&#x27;);</span><br><span class="line"><span class="selector-tag">commit</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; insert into tt values(4,&#x27;bb&#x27;);</span><br><span class="line"> &gt; <span class="selector-tag">commit</span>;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>右边发现第四行可以插入，然后它也插入数据(发现报错)</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">insert into tt values(4,&#x27;oo&#x27;);</span><br><span class="line">ERROR 1062 (23000): Duplicate entry &#x27;4&#x27; for key &#x27;PRIMARY&#x27;</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; insert into tt values(4,&#x27;oo&#x27;);</span><br><span class="line"> ERROR 1062 (23000): Duplicate entry &#x27;4&#x27; for key &#x27;PRIMARY&#x27;</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 </li>
