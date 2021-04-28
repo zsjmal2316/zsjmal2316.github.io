@@ -79,7 +79,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 </tr>
 <tr>
 <td>FORWRAD链</td>
-<td>负责转发流经主机的数据包，起转发的左右(net.ipv4.ip_forward=0)</td>
+<td>负责转发流经主机的数据包，起转发的作用(net.ipv4.ip_forward=0)</td>
 </tr>
 <tr>
 <td>OUTPUT链</td>
@@ -184,7 +184,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <td>对规则的具体处理动作（ACCEPT为接受，DROP为丢弃，REJECT为拒绝）</td>
 </tr>
 <tr>
-<td>-p，-proto</td>
+<td>-p，–protocol</td>
 <td>指定的协议</td>
 </tr>
 <tr>
@@ -200,7 +200,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <td>指定源地址或网段</td>
 </tr>
 <tr>
-<td>-d，destination</td>
+<td>-d，–destination</td>
 <td>指定目的地址</td>
 </tr>
 <tr>
@@ -234,7 +234,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <td>指定默认规则</td>
 </tr>
 <tr>
-<td>–m multiport</td>
+<td>-m multiport</td>
 <td>指定多个端口</td>
 </tr>
 <tr>
@@ -365,7 +365,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -nL</span><br><span class="line">Chain FORWARD (policy ACCEPT)</span><br><span class="line">target     prot opt source               destination   </span><br></pre></td></tr></table></figure>
 </li>
 <li><p>不需要filter防火墙功能，共享上网最好暂时停掉防火墙测试</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/iptables stop</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ /etc/init.d/iptables stop</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>加载iptables内核模块，配置网关需要iptables的nat表，PREROUTING，POSTROUTING载入iptables内核模块</p>
 <figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">modprobe ip_tables</span><br><span class="line">modprobe iptable_filter</span><br><span class="line">modprobe iptable_nat</span><br><span class="line">modprobe ip_conntrack</span><br><span class="line">modprobe ip_conntrack_ftp</span><br><span class="line">modprobe ip_nat_ftp</span><br><span class="line">modprobe ipt_state</span><br></pre></td></tr></table></figure>
@@ -427,7 +427,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <h2 id="实现外网IP和内网IP一对多映射"><a href="#实现外网IP和内网IP一对多映射" class="headerlink" title="实现外网IP和内网IP一对多映射"></a>实现外网IP和内网IP一对多映射</h2><p><strong>1. 将10.0.0.0/28位的掩码映射成外网IP1.1.1.1-1.1.1.10范围</strong></p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -t nat -A POSTROUTING -s 10.0.0.0/28 -o eth0 -j SNAT --to-source 1.1.1.1-1.1.1.10</span><br></pre></td></tr></table></figure>
 <p><strong>2. 将10.0.0.0/24位的掩码映射成外网IP1.1.1.1-1.1.1.10范围</strong></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o eth0 -j SNAT --to-source 1.1.1.1-1.1.1.10</span><br></pre></td></tr></table></figure></div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Inaction</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://myboke.ink/2021/01/21/iptables应用操作/">https://myboke.ink/2021/01/21/iptables应用操作/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/iptables/">iptables</a></div><div class="social-share pull-right"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script><nav id="pagination"><div class="prev-post pull-left"><a href="/2021/01/21/firewalld%E5%BA%94%E7%94%A8%E6%93%8D%E4%BD%9C/"><i class="fa fa-chevron-left">  </i><span>firewalld应用操作</span></a></div><div class="next-post pull-right"><a href="/2021/01/17/rsync%E5%85%A8%E7%BD%91%E5%A4%87%E4%BB%BD/"><span>rsync全网备份</span><i class="fa fa-chevron-right"></i></a></div></nav><div id="gitalk-container"></div><script>var gitalk = new Gitalk({
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o eth0 -j SNAT --to-source 1.1.1.1-1.1.1.10</span><br></pre></td></tr></table></figure></div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Inaction</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://myboke.ink/2021/01/21/iptables应用操作/">https://myboke.ink/2021/01/21/iptables应用操作/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/iptables/">iptables</a></div><div class="social-share pull-right"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script><nav id="pagination"><div class="prev-post pull-left"><a href="/2021/01/21/firewalld%E5%BA%94%E7%94%A8%E6%93%8D%E4%BD%9C/"><i class="fa fa-chevron-left">  </i><span>firewalld应用操作</span></a></div><div class="next-post pull-right"><a href="/2021/01/17/rsync%E5%85%A8%E7%BD%91%E5%A4%87%E4%BB%BD/"><span>rsync全网备份</span><i class="fa fa-chevron-right"></i></a></div></nav><div id="gitalk-container"></div><script>var gitalk = new Gitalk({
   clientID: '6cea6a646bff1a0d5f5b',
   clientSecret: '6e9ef08f31f505d416bc0afe2d304808e9063627',
   repo: 'zsjmal2316.github.io',
