@@ -32,13 +32,13 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <blockquote>
 <ol>
 <li>克隆后会在/etc/udev/rules.d/70-persistent-net.rules文件中会多出1行网卡信</li>
-<li>先查看没有克隆的70-persistent-net.rules文件，会有两个网卡名称，eth0和eth1</li>
+<li>先查看没有克隆的70-persistent-net.rules文件，会有两个网卡名称，eth0和eth1（eth1是我的第二张网卡）</li>
 </ol>
 </blockquote>
 <p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117220734.png"></p>
 <p><strong>再查看克隆过后的70-persistent-net.rules文件，多出了一个eth2</strong></p>
 <p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117215057.png"></p>
-<p><strong>在克隆的虚拟机上删除名称为eth0的行，然后将名称为eth2行修改eth0,保存并退出<br> 名称为eth1行的继续保留</strong></p>
+<p><strong>在克隆的虚拟机上删除名称为eth0的行，然后将名称为eth2行修改eth0,保存并退出名称为eth1行的继续保留</strong></p>
 <p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img/20210117215106.png"></p>
 <p><strong>3. 修改配置文件/etc/sysconfig/network-scripts/ifcfg-eth0</strong></p>
 <blockquote>
