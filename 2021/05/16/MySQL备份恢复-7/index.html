@@ -1,0 +1,371 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="MySQL备份恢复-7"><meta name="keywords" content=""><meta name="author" content="Inaction"><meta name="copyright" content="Inaction"><title>MySQL备份恢复-7 | Inaction's Blog</title><link rel="shortcut icon" href="/imdadul-hussain-u_oLPS_ZYSc-unsplash.jpg"><link rel="stylesheet" href="/css/index.css?version=1.9.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script><link rel="dns-prefetch" href="https://hm.baidu.com"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?12b421fdad87d1edf2305ccb7229d2c1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><link rel="dns-prefetch" href="https://www.google-analytics.com"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'G-8RMJ1F8ETC', 'auto');
+ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  hexoVersion: '5.3.0'
+} </script><meta name="generator" content="Hexo 5.3.0"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%87%E4%BB%BD%E6%81%A2%E5%A4%8D"><span class="toc-number">1.</span> <span class="toc-text">备份恢复</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL%E5%B8%B8%E8%A7%84%E7%9A%84%E5%A4%87%E4%BB%BD%E6%96%B9%E6%A1%88"><span class="toc-number">1.1.</span> <span class="toc-text">MySQL常规的备份方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%87%E4%BB%BD%E5%B7%A5%E5%85%B7%E5%8E%9F%E7%94%9F%E4%B8%8E%E7%AC%AC%E4%B8%89%E6%96%B9"><span class="toc-number">1.1.1.</span> <span class="toc-text">备份工具原生与第三方</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mysqldump%E4%BD%BF%E7%94%A8"><span class="toc-number">1.2.</span> <span class="toc-text">mysqldump使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%87%E4%BB%BD%E4%B8%93%E7%94%A8%E5%9F%BA%E6%9C%AC%E5%8F%82%E6%95%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text">备份专用基本参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E5%8F%82%E6%95%B0%E4%BD%BF%E7%94%A8"><span class="toc-number">1.2.2.</span> <span class="toc-text">特殊参数使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E4%B8%8E%E7%AD%96%E7%95%A5"><span class="toc-number">1.2.3.</span> <span class="toc-text">环境与策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%85%E9%9A%9C%E6%A8%A1%E6%8B%9F%E6%BC%94%E7%BB%83"><span class="toc-number">1.2.4.</span> <span class="toc-text">故障模拟演练</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%81%A2%E5%A4%8D%E8%BF%87%E7%A8%8B"><span class="toc-number">1.2.5.</span> <span class="toc-text">恢复过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GTID%E6%A8%A1%E5%BC%8F%E5%A4%87%E4%BB%BD%E6%81%A2%E5%A4%8D%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.2.6.</span> <span class="toc-text">GTID模式备份恢复示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#xtrabackup%E7%89%A9%E7%90%86%E5%A4%87%E4%BB%BD%E4%BD%BF%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text">xtrabackup物理备份使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E9%87%8F%E5%A4%87%E4%BB%BD%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.1.</span> <span class="toc-text">全量备份原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E%E5%A4%87%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.2.</span> <span class="toc-text">增备原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96%E5%B9%B6%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85xtrabackup"><span class="toc-number">1.3.3.</span> <span class="toc-text">安装依赖并下载安装xtrabackup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#innobackupex%E4%BD%BF%E7%94%A8"><span class="toc-number">1.3.4.</span> <span class="toc-text">innobackupex使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D"><span class="toc-number">1.3.4.1.</span> <span class="toc-text">备份与恢复</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%87%E4%BB%BD%E4%BA%A7%E7%94%9F%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.4.2.</span> <span class="toc-text">备份产生文件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#innobackupex%E5%85%A8%E5%A4%87%E4%B8%8E%E6%81%A2%E5%A4%8D%E8%BF%87%E7%A8%8B"><span class="toc-number">1.3.5.</span> <span class="toc-text">innobackupex全备与恢复过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#innobackupex%E5%A2%9E%E9%87%8F%E5%A4%87%E4%BB%BD"><span class="toc-number">1.3.6.</span> <span class="toc-text">innobackupex增量备份</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%81%E7%A7%BB5-6%E8%87%B35-7"><span class="toc-number">1.4.</span> <span class="toc-text">迁移5.6至5.7</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%81%E7%A7%BB%E8%BF%87%E7%A8%8B"><span class="toc-number">1.4.1.</span> <span class="toc-text">迁移过程</span></a></li></ol></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/imdadul-hussain-u_oLPS_ZYSc-unsplash.jpg"></div><div class="author-info__name text-center">Inaction</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">50</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">19</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">13</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Friend Links</div><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="http://www.ji4n.cn/">Jen</a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(img/beijing2.png)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">Inaction's Blog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search"></i><span> Search</span></a></span></div><div id="post-info"><div id="post-title">MySQL备份恢复-7</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2021-05-16</time></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="备份恢复"><a href="#备份恢复" class="headerlink" title="备份恢复"></a>备份恢复</h1><h2 id="MySQL常规的备份方案"><a href="#MySQL常规的备份方案" class="headerlink" title="MySQL常规的备份方案"></a>MySQL常规的备份方案</h2><p>从备份类型来说，可分为<strong>冷备份、热备份和温备</strong></p>
+<p>冷备份：主要使用系统命令完成，是基于物理文件的复制。比如命令CP，特点是快速、事务一致；但是重要的一点是需要停止服务，适用的场景会相对较少</p>
+<p>热备份：可以理解是在线备份，不会中断已有的业务访问，绝大多数的场景涉及的都是热备份，下述使用的备份工具也都是基于热备份的前提下</p>
+<p>温备份：锁表备份，只能查询不能修改（MyISAM）</p>
+<table>
+<thead>
+<tr>
+<th>备份工具</th>
+<th>归属</th>
+<th>备份类型</th>
+<th>多线程备份</th>
+<th>备份效率</th>
+<th>恢复效率</th>
+<th>空间占用</th>
+<th>事务一致性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mysqldump</td>
+<td>官方</td>
+<td>逻辑备份</td>
+<td>不支持</td>
+<td>低</td>
+<td>低</td>
+<td>适中</td>
+<td>不完全一致</td>
+</tr>
+<tr>
+<td>xtrabackup</td>
+<td>第三方</td>
+<td>物理备份</td>
+<td>支持</td>
+<td>高</td>
+<td>高</td>
+<td>大</td>
+<td>支持</td>
+</tr>
+</tbody></table>
+<h3 id="备份工具原生与第三方"><a href="#备份工具原生与第三方" class="headerlink" title="备份工具原生与第三方"></a>备份工具原生与第三方</h3><p><strong>mysqldump备份工具</strong></p>
+<p>优点</p>
+<ul>
+<li>不需要安装，原生</li>
+<li>备份出来的是SQL，文本格式，可读性高，便于备份处理</li>
+<li>压缩比较高，节省备份的磁盘空间</li>
+</ul>
+<p>缺点</p>
+<ul>
+<li>依赖于数据库引擎，需要从磁盘把数据读出，然后转换成SQL进行转存，数据量大的话效率较低</li>
+<li>建议：100G以内的数据量级，可以使用mysqldump超过TB以上，也可选择的是mysqldump，配合分布式的系统</li>
+</ul>
+<p><strong>xtrabackup备份工具</strong></p>
+<p>优点</p>
+<ul>
+<li>类似于直接CP数据文件，不需要管逻辑结构，相对来说性能较高</li>
+</ul>
+<p>缺点</p>
+<ul>
+<li>可读性差</li>
+<li>压缩比低，需要更多磁盘空间</li>
+<li>建议：大于100G小于TB</li>
+</ul>
+<h2 id="mysqldump使用"><a href="#mysqldump使用" class="headerlink" title="mysqldump使用"></a>mysqldump使用</h2><h3 id="备份专用基本参数"><a href="#备份专用基本参数" class="headerlink" title="备份专用基本参数"></a>备份专用基本参数</h3><blockquote>
+<p>注意：以下参数备份恢复时：必须库事先存在，并且使用source才能恢复</p>
+</blockquote>
+<p><strong>-A 全备参数</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir -p /data/backup</span><br><span class="line">$ mysqldump -uroot -p -A &gt;/data/backup/full.sql</span><br><span class="line"><span class="selector-tag">Enter</span> <span class="selector-tag">password</span>: </span><br><span class="line"></span><br><span class="line">$ cd /data/backup/</span><br><span class="line">$ ls</span><br><span class="line"><span class="selector-tag">full</span><span class="selector-class">.sql</span></span><br></pre></td></tr></table></figure>
+<p><strong>-B 指定备份的多个单库</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mysqldump -uroot -p123456 -B world &gt;/data/backup/db.sql</span><br></pre></td></tr></table></figure>
+<p><strong>备份单个或多个表</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mysqldump -uroot -p123456 world city country &gt;/data/backup/bak1.sql</span><br></pre></td></tr></table></figure>
+<p><strong>补充说明</strong></p>
+<ul>
+<li>常规备份是要加 –set-gtid-purged=OFF，解决备份时的警告</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mysqldump -uroot -p -A --set-gtid-purged=OFF &gt;/data/backup/a.sql</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>构建主从时，做的备份，–set-gitd-purged=AUTO/ON（默认是AUTO，所以不需要添加）</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mysqldump -uroot -p -A  &gt;/data/backup/a.sql</span></span><br></pre></td></tr></table></figure>
+<h3 id="特殊参数使用"><a href="#特殊参数使用" class="headerlink" title="特殊参数使用"></a>特殊参数使用</h3><ul>
+<li>-R 备份存储过程及函数</li>
+<li>-E 备份事件</li>
+<li>-F 备份开始时，刷新一个新binlog日志</li>
+<li>–triggers 触发器</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mysqldump -uroot -p -A -R -E --triggers &gt;/data/backup/full.sql</span><br><span class="line">$ mysqldump -uroot -p  -A  -R --triggers -F &gt;/bak/full.sql</span><br></pre></td></tr></table></figure>
+<p><strong>–master-data 选项</strong></p>
+<p>在备份时，如果要生成整个备份文件的检查点，可以使用master-data选项，通常会使用1和2两个选项，它们之间的区别是一个是执行（参数值1），一个是不执行（参数值2）</p>
+<p><code>作用</code>：以注释的形式，保存备份开始事件点的binlog的状态信息</p>
+<p><strong>–single-trancation 选项</strong></p>
+<p>在备份时，是默认启动–lock-all-tables选项，所以要明确一点是开启–single-transaction选项，保证在一个事务中所有先沟通的查询读取到同样的数据，只在dump开始时短暂获取global read locak，否则在备份中全程锁表</p>
+<p><code>作用</code>：对于InnoDB的表，进行一致性快照备份，不锁表</p>
+<blockquote>
+<p>注意：在备份过程中，要确保没有其他连接在使用ALTER TABLE、CREATE TABLE、DROP TABLE、RENAME TABLE、TRUNCATE TABLE等语句，否则会出现不正确的内容或者失败</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mysqldump -uroot -p  -A  -R --triggers --master-data=2   &gt;/back/world.sql  </span><br><span class="line">$ grep &#x27;CHANGE&#x27; /backup/world.sql </span><br><span class="line">-- CHANGE MASTER TO MASTER_LOG_FILE=&#x27;mysql-bin.000035&#x27;, MASTER_LOG_POS=194;</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mysqldump -uroot -p -A -R -E --triggers --master-data=2  --single-transaction --set-gtid-purged=OFF &gt;/data/backup/full.sql</span><br></pre></td></tr></table></figure>
+<p>自动锁表</p>
+<ul>
+<li>不加–single-transcation，温备份</li>
+<li>加了–single-transcation，对于InnoDB表不锁表备份（快照备份）</li>
+</ul>
+<p><strong>–set-gtid-purged 选项</strong></p>
+<ul>
+<li>使用场景，选项有：auto，on，of</li>
+</ul>
+<p>–set-gtid-purged=OFF，可以使用在日常备份参数中.(解决警告)</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mysqldump -uroot -p -A -R -E --triggers --master-data=2  --single-transaction --set-gtid-purged=OFF &gt;/data/backup/full.sql</span><br></pre></td></tr></table></figure>
+<p>auto , on 在构建主从复制环境时需要的参数配置</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mysqldump -uroot -p -A -R -E --triggers --master-data=2  --single-transaction --set-gtid-purged=ON &gt;/data/backup/full.sql</span><br></pre></td></tr></table></figure>
+<p><strong>–max-allowed-packet 选项</strong></p>
+<p>发送到服务器或从服务器接收的最大数据包长度</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mysqldump -uroot -p -A -R -E --triggers --master-data=2  --single-transaction --set-gtid-purged=OFF --max-allowed-packet=256M &gt;/data/backup/full.sql</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">PS</span>：<span class="selector-tag">The</span> <span class="selector-tag">maximum</span> <span class="selector-tag">packet</span> <span class="selector-tag">length</span> <span class="selector-tag">to</span> <span class="selector-tag">send</span> <span class="selector-tag">to</span> <span class="selector-tag">or</span> <span class="selector-tag">receive</span> <span class="selector-tag">from</span> <span class="selector-tag">server</span>.</span><br></pre></td></tr></table></figure>
+<p><strong>add-drop-database 选项</strong></p>
+<p>在导入数据时，如果数据库存在，通常有两种策略，一种是使用drop database if exists选项，另一种是忽略该操作。对于这种操作，mysqldump提供了丰富的选项，对于表的操作时默认开启了drop table if exists的处理方式，而对于数据是直接忽略此操作，可以设定这些已有的默认值，对于实际的工作环境进行选用</p>
+<p><strong>order-by-primary 选项</strong></p>
+<p>这个选项属于MySQL特色的一个功能，能够根据主键来进行排序</p>
+<p><strong>skip-extended-insert 选项</strong></p>
+<p>默认使用insert into xxx values(xx)(xx)的形式</p>
+<p>如果要得到一行数据对应一条insert语句的形式，可以使用该选项，语句的形式为</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO `test` VALUES (1,&#x27;1&#x27;);</span><br></pre></td></tr></table></figure>
+<p><strong>complete-insert 选项</strong></p>
+<p>如果对insert语句还不满意，想生成完整的字段列表，可以使用该选项，语句的形式为</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO `test` (&#x27;id&#x27;, &#x27;name&#x27;) VALUES (1, &#x27;gg&#x27;),(2, &#x27;dd&#x27;);</span><br></pre></td></tr></table></figure>
+<p><strong>replace 选项</strong></p>
+<p>可以将insert转化为replace语句，或者结合skip-extended-insert来完成，这样可以生成若干条的replace语句，语句形成如下</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">REPLACE INTO `test` VALUES (1,&#x27;gg&#x27;);</span><br></pre></td></tr></table></figure>
+<h3 id="环境与策略"><a href="#环境与策略" class="headerlink" title="环境与策略"></a>环境与策略</h3><p><strong>背景环境</strong>：正在运行的网站系统，数据库：msyql-5.7.20，数据量50G，日业务增量1~5M</p>
+<p><strong>备份策略</strong>：每天23:00点,计划任务调用mysqldump执行全备脚本</p>
+<p><strong>故障时间点</strong>：年底故障演练，模拟周三上午10点误删除数据库</p>
+<p><strong>备份思路</strong></p>
+<ul>
+<li><p>停业务，挂维护页，避免数据的二次伤害</p>
+</li>
+<li><p>找一个临时库，恢复周二23:00全备</p>
+</li>
+<li><p>截取周二23:00 至 周三10点误删除之间的binlog，恢复到临时库</p>
+</li>
+<li><p>测试可用性和完整性</p>
+</li>
+<li><p>两种方法使用库</p>
+<p>1）直接使用临时库顶替原生产库，前端应用割接到新库</p>
+<p>2）将误删除的表导出，导入到原生产库</p>
+</li>
+<li><p>开启业务：处理20分钟，最终业务恢复正常</p>
+</li>
+</ul>
+<h3 id="故障模拟演练"><a href="#故障模拟演练" class="headerlink" title="故障模拟演练"></a>故障模拟演练</h3><p><strong>1. 准备的数据</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">create</span> <span class="selector-tag">database</span> <span class="selector-tag">backup</span>;</span><br><span class="line">&gt; <span class="selector-tag">use</span> <span class="selector-tag">backup</span></span><br><span class="line">&gt; <span class="selector-tag">create</span> <span class="selector-tag">table</span> <span class="selector-tag">t1</span> (<span class="selector-tag">id</span> <span class="selector-tag">int</span>);</span><br><span class="line">&gt; <span class="selector-tag">insert</span> <span class="selector-tag">into</span> <span class="selector-tag">t1</span> <span class="selector-tag">values</span>(1),(2),(3);</span><br><span class="line">&gt; <span class="selector-tag">commit</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>2. 周二的23:00全备</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldump -uroot -p -A  -R  --triggers --set-gtid-purged=OFF --master-data=2 --single-transaction|gzip &gt; /data/backup/full_$(date +%F).sql.gz</span><br></pre></td></tr></table></figure>
+<p><strong>3. 模拟周二23:00 至 周三10点之间数据变化</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">use</span> <span class="selector-tag">backup</span></span><br><span class="line">&gt; <span class="selector-tag">insert</span> <span class="selector-tag">into</span> <span class="selector-tag">t1</span> <span class="selector-tag">values</span>(11),(22),(33);</span><br><span class="line">&gt; <span class="selector-tag">commit</span>;</span><br><span class="line">&gt; <span class="selector-tag">create</span> <span class="selector-tag">table</span> <span class="selector-tag">t2</span> (<span class="selector-tag">id</span> <span class="selector-tag">int</span>);</span><br><span class="line">&gt; <span class="selector-tag">insert</span> <span class="selector-tag">into</span> <span class="selector-tag">t2</span> <span class="selector-tag">values</span>(11),(22),(33);</span><br><span class="line">&gt; <span class="selector-tag">commit</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>4. 模拟故障，删除表（只是模拟，不代表生产操作）</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">drop</span> <span class="selector-tag">database</span> <span class="selector-tag">backup</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="恢复过程"><a href="#恢复过程" class="headerlink" title="恢复过程"></a>恢复过程</h3><p><strong>1. 准备临时数据库（多实例3307）</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl start mysql3307</span><br><span class="line">$ mysql -uroot -p -S /data/3307/mysql.sock -P 3307</span><br></pre></td></tr></table></figure>
+<p><strong>2. 准备备份</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ cd /backup</span><br><span class="line">$ gunzip full_2020-09-07<span class="selector-class">.sql</span><span class="selector-class">.gz</span> </span><br><span class="line">$ vim full_2020-09-07<span class="selector-class">.sql</span><span class="selector-class">.gz</span> </span><br><span class="line">-- CHANGE MASTER TO MASTER_LOG_FILE=&#x27;mysql.000003&#x27;, MASTER_LOG_POS=762;</span><br><span class="line"># 找到新事物起始位置762</span><br><span class="line"></span><br><span class="line">&gt; show master status;</span><br><span class="line">&gt; show binlog events in &#x27;mysql.000003&#x27;;</span><br><span class="line"># 找到终点位置1529</span><br><span class="line"></span><br><span class="line"># 导入二进制日志</span><br><span class="line">mysqlbinlog --skip-gtids --start-position=762 --stop-position=1529 /data/binlog/mysql.000003 &gt;/data/backup/bin.sql</span><br></pre></td></tr></table></figure>
+<p><strong>3. 恢复备份到临时库</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ mysql -S /data/3307/mysql.sock</span><br><span class="line">&gt; set sql_log_bin=0;</span><br><span class="line">&gt; <span class="selector-tag">source</span> /<span class="selector-tag">backup</span>/<span class="selector-tag">full_2019-07-15</span><span class="selector-class">.sql</span></span><br><span class="line">&gt; <span class="selector-tag">source</span> /<span class="selector-tag">backup</span>/<span class="selector-tag">bin</span><span class="selector-class">.sql</span>  </span><br><span class="line">&gt; set sql_log_bin=0;</span><br></pre></td></tr></table></figure>
+<p><strong>4. 故障表导出并恢复到生产</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ mysqldump -uroot -p123456 -S /data/3307/mysql.sock -B backup &gt;/data/backup/bak.sql</span><br><span class="line">$ mysql -uroot -p123456</span><br><span class="line">&gt; set sql_log_bin=0</span><br><span class="line">&gt; <span class="selector-tag">source</span> /<span class="selector-tag">backup</span>/<span class="selector-tag">bak</span><span class="selector-class">.sql</span>;</span><br><span class="line">&gt; set sql_log_bin=1</span><br></pre></td></tr></table></figure>
+<h3 id="GTID模式备份恢复示例"><a href="#GTID模式备份恢复示例" class="headerlink" title="GTID模式备份恢复示例"></a>GTID模式备份恢复示例</h3><p><strong>1. 创建一个数据库bak</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">create</span> <span class="selector-tag">database</span> <span class="selector-tag">bak</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>2. 在bak下创建一张表t1</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">create</span> <span class="selector-tag">table</span> <span class="selector-tag">t1</span>(<span class="selector-tag">id</span> <span class="selector-tag">int</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>3. 插入5行任意数据</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">insert</span> <span class="selector-tag">into</span> <span class="selector-tag">t1</span> <span class="selector-tag">values</span>(1),(2),(3),(4),(5)</span><br><span class="line">&gt; <span class="selector-tag">commit</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>4. 进行全备备份</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mysqldump -uroot -p123456 -A --master-data=2 --single-transaction -R -E --triggers &gt;/data/backup/ba.sql</span><br><span class="line">SET @@GLOBAL.GTID_PURGED=&#x27;f4022bab-e9cf-11ea-aa7b-000c29ee0e5e:1-16&#x27;; # 从第17个事务开始</span><br><span class="line">-- CHANGE MASTER TO MASTER_LOG_FILE=&#x27;mysql.000003&#x27;, MASTER_LOG_POS=1627;</span><br></pre></td></tr></table></figure>
+<p><strong>5. 插入三行数据，任意修改3行数据，删除1行数据</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">insert</span> <span class="selector-tag">into</span> <span class="selector-tag">t1</span> <span class="selector-tag">values</span>(6),(7),(8);</span><br><span class="line">&gt; <span class="selector-tag">commit</span>;</span><br><span class="line">&gt; update t1 set id=10 where id&gt;2;</span><br><span class="line">&gt; <span class="selector-tag">commit</span>;</span><br><span class="line">&gt; delete from t1 where id=5;</span><br><span class="line">&gt; <span class="selector-tag">commit</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>6. 删除所有数据（误删）</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">delete</span> <span class="selector-tag">from</span> <span class="selector-tag">t1</span>;</span><br><span class="line">&gt; <span class="selector-tag">commit</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>7. 再t1中又插入5行新数据，修改3行数据</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">insert</span> <span class="selector-tag">into</span> <span class="selector-tag">t1</span> <span class="selector-tag">values</span>(11),(12),(13),(14),(15);</span><br><span class="line">&gt; update t1 set id=20 where id&gt;13;</span><br><span class="line">&gt; <span class="selector-tag">commit</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>PS：需求跳过第六步恢复表数据</p>
+</blockquote>
+<p><strong>8. 导出二进制日志</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mysqlbinlog --skip-gtids --include-gtids=&#x27;f4022bab-e9cf-11ea-aa7b-000c29ee0e5e:17-22&#x27; --exclude-gtids=&#x27;f4022bab-e9cf-11ea-aa7b-000c29ee0e5e:20&#x27; /data/binlog/mysql.000003 &gt;/data/backup/bin.sql</span><br></pre></td></tr></table></figure>
+<p><strong>9. 恢复数据</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; set sql_bin_log=0;</span><br><span class="line">&gt; <span class="selector-tag">source</span> /<span class="selector-tag">data</span>/<span class="selector-tag">backup</span>/<span class="selector-tag">full</span><span class="selector-class">.sql</span></span><br><span class="line">&gt; <span class="selector-tag">source</span> /<span class="selector-tag">data</span>/<span class="selector-tag">backup</span>/<span class="selector-tag">bin</span><span class="selector-class">.sql</span></span><br><span class="line">&gt; set sql_bin_log=0;</span><br></pre></td></tr></table></figure>
+<h2 id="xtrabackup物理备份使用"><a href="#xtrabackup物理备份使用" class="headerlink" title="xtrabackup物理备份使用"></a>xtrabackup物理备份使用</h2><p>xtrabackup是Percona公司研发的一款开源、免费的MySQL热备份软件，具备增备功能，同时在大数数据的场景下具有明显的恢复优势，它主要包括xtrabackup和innobackypex两个命令</p>
+<p>其中，xtrabackup主要是用于热备份innodb，或者在xtradb表中数据的工具，不能备份其他类型的表，也不能备份数据表结构。innobackupex是将xtrabackup进行封装的perl脚本，可以备份和恢复MyISAM表以及数据表结构</p>
+<p>对于不是InnoDB表（比如 myisam)，锁表cp数据文件，属于一种温备份</p>
+<p>对于InnoDB的表（支持事务的）不锁表，拷贝数据页，最终以数据文件的方式保存下来，把一部分redo和undo一并备走，属于热备方式</p>
+<blockquote>
+<p>注：在2.3版本innobackupex的功能全部集成到了xtrabackup里面，只保留一个二进制入口，为了保证兼容性，innobackupex是作为xtrabackup的一个软连接</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ll /usr/bin/innobackupex</span><br><span class="line"><span class="selector-tag">lrwxrwxrwx</span>. 1 <span class="selector-tag">root</span> <span class="selector-tag">root</span> 10 <span class="selector-tag">Feb</span> 27 20<span class="selector-pseudo">:45</span> /<span class="selector-tag">usr</span>/<span class="selector-tag">bin</span>/<span class="selector-tag">innobackupex</span> <span class="selector-tag">-</span>&gt; <span class="selector-tag">xtrabackup</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="全量备份原理"><a href="#全量备份原理" class="headerlink" title="全量备份原理"></a>全量备份原理</h3><p>在备份开始时，会启动一个xtrabackup_log后台检测的进程，一旦发现redo有新的日志写入，立刻将日志写入到日志文件xtrabackup_log，然后开始物理文件的复制，多余Innodb表和MyISAM表会有不同粒度的锁，知道复制完成。如下图</p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210227205907253.png" alt="image-20210227205907253"></p>
+<h3 id="增备原理"><a href="#增备原理" class="headerlink" title="增备原理"></a>增备原理</h3><p>增备的原理和全备类似，但是检查点LSN有所差异，增备是基于全备的，第一次增备备份是基于上一次全备，后续的增备都是上一次的增备，最终达到一致性。增备的过程主要是处理Innodb中有变更的页（即页的LSN），LSN信息在xtrabackup_checkpoints中</p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210227210547307.png" alt="image-20210227210547307"></p>
+<p>而恢复过程是分为两个阶段</p>
+<ul>
+<li>prepare阶段的主要作用是通过回滚未提交的事务及同步已经提交的事务，使得数据文件处于一致性状态。主要是通过innobackupex的apply-log选项实现的，最终会重构出相关的redo，ibdata文件等</li>
+<li>copy back阶段会把所有的文件都复制到指定的目录下，启动服务</li>
+</ul>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210227210616774.png" alt="image-20210227210616774"></p>
+<h3 id="安装依赖并下载安装xtrabackup"><a href="#安装依赖并下载安装xtrabackup" class="headerlink" title="安装依赖并下载安装xtrabackup"></a>安装依赖并下载安装xtrabackup</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</span><br><span class="line">$ yum -y install perl perl-devel libaio libaio-devel perl-Time-HiRes perl-DBD-MySQL libev</span><br><span class="line">$ wget https://www.percona.com/downloads/XtraBackup/Percona-XtraBackup-2.4.12/binary/redhat/7/x86_64/percona-xtrabackup-24-2.4.12-1.el7.x86_64.rpm</span><br><span class="line"></span><br><span class="line">$ yum install percona-xtrabackup-24-2.4.12-1.el7.x86_64.rpm -y</span><br></pre></td></tr></table></figure>
+<h3 id="innobackupex使用"><a href="#innobackupex使用" class="headerlink" title="innobackupex使用"></a>innobackupex使用</h3><h4 id="备份与恢复"><a href="#备份与恢复" class="headerlink" title="备份与恢复"></a>备份与恢复</h4><p>全备备份</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ innobackupex --user=root --password=123456 --socket=/tmp/mysql.sock /data/backup</span><br></pre></td></tr></table></figure>
+<p>自主定制备份路径名</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ innobackupex --user=root --password=123456 --socket=/tmp/mysql.sock --no-timestamp /data/backup/full</span><br></pre></td></tr></table></figure>
+<p>恢复</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ innobackupex --apply-log /backup/full</span><br></pre></td></tr></table></figure>
+<h4 id="备份产生文件"><a href="#备份产生文件" class="headerlink" title="备份产生文件"></a>备份产生文件</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ /data/backup</span><br><span class="line">$ ll</span><br><span class="line"><span class="selector-tag">-rw-r-----</span> 1 <span class="selector-tag">root</span> <span class="selector-tag">root</span>       24 <span class="selector-tag">Jun</span> 29 09<span class="selector-pseudo">:59</span> <span class="selector-tag">xtrabackup_binlog_info</span></span><br><span class="line"><span class="selector-tag">-rw-r-----</span> 1 <span class="selector-tag">root</span> <span class="selector-tag">root</span>      119 <span class="selector-tag">Jun</span> 29 09<span class="selector-pseudo">:59</span> <span class="selector-tag">xtrabackup_checkpoints</span></span><br><span class="line"><span class="selector-tag">-rw-r-----</span> 1 <span class="selector-tag">root</span> <span class="selector-tag">root</span>      489 <span class="selector-tag">Jun</span> 29 09<span class="selector-pseudo">:59</span> <span class="selector-tag">xtrabackup_info</span></span><br><span class="line"><span class="selector-tag">-rw-r-----</span> 1 <span class="selector-tag">root</span> <span class="selector-tag">root</span>     2560 <span class="selector-tag">Jun</span> 29 09<span class="selector-pseudo">:59</span> <span class="selector-tag">xtrabackup_logfile</span></span><br></pre></td></tr></table></figure>
+<p><strong>1）xtrabackup_binlog_info：备份时刻的binlog位置</strong></p>
+<blockquote>
+<p>PS：记录的是备份时刻，binlog的文件扩展名和当时的结束的position gtid，可以用来作为截取binlog时的起点（这种是开启了GTID特性备份的情况）</p>
+</blockquote>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cat xtrabackup_binlog_info </span><br><span class="line"><span class="selector-tag">mysql-bin</span>.000003    536749</span><br><span class="line">79<span class="selector-tag">de40d3-5ff3-11e9-804a-000c2928f5dd</span><span class="selector-pseudo">:1-7</span></span><br></pre></td></tr></table></figure>
+<p>**2）xtrabackup_checkpoints **</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ cat xtrabackup_checkpoints</span><br><span class="line">backup_type = full-backuped # 类型为全备</span><br><span class="line">from_lsn = 0 		        # 全备（就是从0开始，度低于增量有别的显示方法） 	   </span><br><span class="line">to_lsn = 160683027	        # 备份开始时间（ckpt）点数据页的LSN	    </span><br><span class="line">last_lsn = 160683036        # 备份结束后，redo日志最终的LSN</span><br><span class="line">compact = 0</span><br><span class="line">recover_binlog_info = 0</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>备份时刻，立即将已经commit过的，内容中的数据也刷新到磁盘（CKPT），开始备份数据，数据文件的LSN会停留在to_lsn位置。</p>
+</li>
+<li><p>备分时刻，也有可能会有其他的数据写入，已备走的数据文件就不会再发生变化了。 </p>
+</li>
+<li><p>在备份过程中，备份文件会一直监控着redo和undo，如果一旦有变化会将日志也一并备走，并记录LSN到last_lsn位</p>
+</li>
+</ul>
+<blockquote>
+<p>注：从to_lsn  —&gt; last_lsn 就是备份过程中产生的数据变化。</p>
+</blockquote>
+<h3 id="innobackupex全备与恢复过程"><a href="#innobackupex全备与恢复过程" class="headerlink" title="innobackupex全备与恢复过程"></a>innobackupex全备与恢复过程</h3><p><strong>1. 全备备份</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ innobackupex  --user=root --password=123456 --socket=/tmp/mysql.sock --no-timestamp /backup/full</span><br></pre></td></tr></table></figure>
+<p><strong>2. 利用全备进行恢复</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ pkill mysqld</span><br><span class="line">$ \rm -rf /data/mysql/data/*</span><br><span class="line">$ innobackupex --apply-log /backup/full/</span><br><span class="line">$ cp -a /backup/full/* /data/mysql/data/</span><br><span class="line">$ chown -R mysql.mysql /data/mysql/data/*</span><br><span class="line">$ /etc/init.d/mysqld start</span><br></pre></td></tr></table></figure>
+<h3 id="innobackupex增量备份"><a href="#innobackupex增量备份" class="headerlink" title="innobackupex增量备份"></a>innobackupex增量备份</h3><p><strong>1. 清空备份路径</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rm -rf /data/backup/*</span><br></pre></td></tr></table></figure>
+<p><strong>2. 模拟数据</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">create</span> <span class="selector-tag">database</span> <span class="selector-tag">full</span> <span class="selector-tag">charset</span> <span class="selector-tag">utf8mb4</span>;</span><br><span class="line">&gt; <span class="selector-tag">use</span> <span class="selector-tag">full</span>;</span><br><span class="line">&gt; <span class="selector-tag">create</span> <span class="selector-tag">table</span> <span class="selector-tag">t1</span> (<span class="selector-tag">id</span> <span class="selector-tag">int</span>);</span><br><span class="line">&gt; <span class="selector-tag">insert</span> <span class="selector-tag">into</span> <span class="selector-tag">t1</span> <span class="selector-tag">values</span>(1),(2),(3);</span><br><span class="line">&gt; <span class="selector-tag">commit</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>3. 进行周日的全备</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ innobackupex  --user=root --password=123456 --socket=/tmp/mysql.sock --no-timestamp /data/backup/full</span><br></pre></td></tr></table></figure>
+<p><strong>4. 模拟周一的数据变化</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">create</span> <span class="selector-tag">database</span> <span class="selector-tag">inc1</span> <span class="selector-tag">charset</span> <span class="selector-tag">utf8mb4</span>;</span><br><span class="line">&gt; <span class="selector-tag">use</span> <span class="selector-tag">inc1</span>;</span><br><span class="line">&gt; <span class="selector-tag">create</span> <span class="selector-tag">table</span> <span class="selector-tag">t1</span> (<span class="selector-tag">id</span> <span class="selector-tag">int</span>);</span><br><span class="line">&gt; <span class="selector-tag">insert</span> <span class="selector-tag">into</span> <span class="selector-tag">t1</span> <span class="selector-tag">values</span>(1),(2),(3);</span><br><span class="line">&gt; <span class="selector-tag">commit</span>;  </span><br></pre></td></tr></table></figure>
+<p><strong>5. 进行周一的增量备份</strong></p>
+<ul>
+<li><p>–incremental 增量开关</p>
+</li>
+<li><p>–incremental-basedir=/data/backup/full 基于那个备份进行增量</p>
+</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ innobackupex  --user=root --password=123456 --socket=/tmp/mysql.sock --no-timestamp --incremental --incremental-basedir=/data/backup/full /data/backup/inc1</span><br></pre></td></tr></table></figure>
+<p><strong>6. 检查xtrabackup_checkpoint文件的LSN是否对应</strong></p>
+<p>如下图所示</p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210216235807367.png" alt="image-20210216235807367"></p>
+<p><strong>7. 模拟周二数据变化</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">create</span> <span class="selector-tag">database</span> <span class="selector-tag">inc2</span> <span class="selector-tag">charset</span> <span class="selector-tag">utf8mb4</span>;</span><br><span class="line">&gt; <span class="selector-tag">use</span> <span class="selector-tag">inc2</span>;</span><br><span class="line">&gt; <span class="selector-tag">create</span> <span class="selector-tag">table</span> <span class="selector-tag">t1</span> (<span class="selector-tag">id</span> <span class="selector-tag">int</span>);</span><br><span class="line">&gt; <span class="selector-tag">insert</span> <span class="selector-tag">into</span> <span class="selector-tag">t1</span> <span class="selector-tag">values</span>(1),(2),(3);</span><br><span class="line">&gt; <span class="selector-tag">commit</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>8. 备份周二的增量</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ innobackupex  --user=root --password=123456 --socket=/tmp/mysql.sock --no-timestamp --incremental --incremental-basedir=/data/backup/inc1 /data/backup/inc2</span><br></pre></td></tr></table></figure>
+<p><strong>9. 模拟周三的数据变化</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">create</span> <span class="selector-tag">database</span> <span class="selector-tag">inc3</span> <span class="selector-tag">charset</span> <span class="selector-tag">utf8mb4</span>;</span><br><span class="line">&gt; <span class="selector-tag">use</span> <span class="selector-tag">inc3</span>;</span><br><span class="line">&gt; <span class="selector-tag">create</span> <span class="selector-tag">table</span> <span class="selector-tag">t1</span> (<span class="selector-tag">id</span> <span class="selector-tag">int</span>);</span><br><span class="line">&gt; <span class="selector-tag">insert</span> <span class="selector-tag">into</span> <span class="selector-tag">t1</span> <span class="selector-tag">values</span>(1),(2),(3);</span><br><span class="line">&gt; <span class="selector-tag">commit</span>;   </span><br></pre></td></tr></table></figure>
+<p><strong>9. 模拟上午10点数据库崩溃</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ pkill mysqld</span><br><span class="line">$ \rm -rf /data/mysql/data/*</span><br></pre></td></tr></table></figure>
+<p><strong>10. 恢复思路</strong></p>
+<ul>
+<li><p>停业务，挂维护页</p>
+</li>
+<li><p>查找可用备份并处理备份：full+inc1+inc2</p>
+</li>
+<li><p>binlog：inc2 到故障时间点的binlog</p>
+</li>
+<li><p>恢复全备+增量+binlog</p>
+</li>
+<li><p>验证过程</p>
+</li>
+<li><p>起业务，撤维护页</p>
+</li>
+</ul>
+<p><strong>11. 恢复前的准备</strong></p>
+<ul>
+<li><p>–apply-log 应用redo和undo的前滚和回滚</p>
+</li>
+<li><p>–redo-only 只应用redo的前滚</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">This option should be used when preparing the base full</span><br><span class="line">backup and when merging all incrementals except the last</span><br><span class="line">one. This forces xtrabackup to skip the &quot;rollback&quot; phase</span><br><span class="line">and do a &quot;redo&quot; only</span><br><span class="line"></span><br><span class="line">这个选项的应用，是当整理全备和所有的增量合并时，除了最后一次增量不使用，</span><br><span class="line">这迫使xtrabackup跳过“回滚”阶段并仅执行“重做”。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>整理full数据</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> innobackupex --apply-log --redo-only  /data/backup/full</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>合并inc1到full，并整理备份</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> innobackupex --apply-log --redo-only --socket=/tmp/mysql.sock --incremental-basedir=/data/backup/inc1 /data/backup/full</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>合并inc2到full,并整理备份</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> innobackupex --apply-log  --incremental-basedir=/data/backup/inc2 /data/backup/full</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>最后一次整理full</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">innobackupex --apply-log  /backup/full</span><br></pre></td></tr></table></figure>
+<p><strong>12. 截取二进制日志</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ cat /data/backup/inc2/xtrabackup_binlog_info </span><br><span class="line"><span class="selector-tag">mysql</span>.000007	1989	<span class="selector-tag">f4022bab-e9cf-11ea-aa7b-000c29ee0e5e</span><span class="selector-pseudo">:1-31</span></span><br><span class="line"></span><br><span class="line">//找到二进制日志</span><br><span class="line">$ mysqlbinlog /data/binlog/mysql.000007|grep &#x27;SET&#x27;</span><br><span class="line"></span><br><span class="line">//截取二进制日志</span><br><span class="line">$ mysqlbinlog --skip-gtids --include-gtids=&#x27;f4022bab-e9cf-11ea-aa7b-000c29ee0e5e:32-34&#x27; /data/binlog/mysql.000007 &gt;/data/backup/binlog.sql</span><br></pre></td></tr></table></figure>
+<p><strong>13. 恢复备份数据</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ cp -a /data/backup/full/* /data/mysql/data/</span><br><span class="line">$ chown -R mysql. /data/mysql/data/*</span><br><span class="line">$ /etc/init.d/mysqld start</span><br><span class="line">&gt; set sql_log_bin=0;</span><br><span class="line">&gt; <span class="selector-tag">source</span> /<span class="selector-tag">backup</span>/<span class="selector-tag">binlog</span><span class="selector-class">.sql</span></span><br></pre></td></tr></table></figure>
+<p><strong>验证数据</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">select</span> * <span class="selector-tag">from</span> <span class="selector-tag">full</span><span class="selector-class">.t1</span>;</span><br><span class="line">&gt; <span class="selector-tag">select</span> * <span class="selector-tag">from</span> <span class="selector-tag">inc1</span><span class="selector-class">.t1</span>;</span><br><span class="line">&gt; <span class="selector-tag">select</span> * <span class="selector-tag">from</span> <span class="selector-tag">inc2</span><span class="selector-class">.t1</span>;</span><br><span class="line">&gt; <span class="selector-tag">select</span> * <span class="selector-tag">from</span> <span class="selector-tag">inc3</span><span class="selector-class">.t1</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="迁移5-6至5-7"><a href="#迁移5-6至5-7" class="headerlink" title="迁移5.6至5.7"></a>迁移5.6至5.7</h2><p><strong>1. 创建必须的目录</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir /data/mysql/data -p</span><br><span class="line">$ mkdir /application/ -p</span><br><span class="line">$ mkdir /data/binlog/ -p</span><br></pre></td></tr></table></figure>
+<p><strong>2. 上传软件至/application下并解压</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ rz</span><br><span class="line"></span><br><span class="line">$ tar xf mysql-5.6.44-linux-glibc2.12-x86_64</span><br><span class="line">$ mv mysql-5.6.44-linux-glibc2.12-x86_64 mysql</span><br></pre></td></tr></table></figure>
+<p><strong>3. 建用户，修改权限</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ useradd mysql </span><br><span class="line">$ chown -R mysql. /application/*</span><br><span class="line">$ chown -R mysql. /data/*</span><br></pre></td></tr></table></figure>
+<p><strong>4. 修改环境变量</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ tail -2 /etc/profile</span><br><span class="line">export PATH=/application/mysql/bin:$PATH</span><br><span class="line">$ source /etc/profile</span><br></pre></td></tr></table></figure>
+<p><strong>5. 移除Linux默认使用的mariadb数据库</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ yum remove mariadb-libs -y</span><br><span class="line">$ yum install -y libaio-devel</span><br><span class="line">$ \rm -rf /data/mysql/data/*</span><br></pre></td></tr></table></figure>
+<p><strong>6. 数据初始化</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ yum -y install autoconf</span><br><span class="line">$ yum install -y libaio-devel</span><br><span class="line">$ /application/mysql/scripts/mysql_install_db --user=mysql --basedir=/application/mysql --datadir=/data/mysql/data</span><br></pre></td></tr></table></figure>
+<p><strong>7. 准备配置文件按和启动脚本</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ cat /etc/my.cnf </span><br><span class="line"><span class="selector-attr">[mysqld]</span></span><br><span class="line">basedir=/application/mysql</span><br><span class="line">datadir=/data/mysql/data</span><br><span class="line">server_id=3306</span><br><span class="line">socket=/tmp/mysql.sock</span><br><span class="line">user=mysql</span><br><span class="line">log_bin=/data/binlog/mysql-bin</span><br><span class="line">binlog_format=row</span><br><span class="line"><span class="selector-attr">[mysql]</span></span><br><span class="line">socket=/tmp/mysql.sock</span><br><span class="line"></span><br><span class="line"># 复制启动脚本</span><br><span class="line">$ cp /application/mysql/support-files/mysql.server /etc/init.d/mysqld</span><br></pre></td></tr></table></figure>
+<p><strong>8. 启动数据库并查看</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ /etc/init.d/mysqld restart</span><br><span class="line">$ ss -lntup|grep mysqld</span><br><span class="line"><span class="selector-tag">tcp</span>    <span class="selector-tag">LISTEN</span>     0      80       :<span class="selector-pseudo">::3306</span>                 :::*</span><br></pre></td></tr></table></figure>
+<p><strong>9. 设置密码</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mysqladmin -uroot -passowrd 123456</span><br><span class="line">$ mysql -uroot -p123456 </span><br></pre></td></tr></table></figure>
+<h3 id="迁移过程"><a href="#迁移过程" class="headerlink" title="迁移过程"></a>迁移过程</h3><p><strong>1. 创建库和表，并插入一行数据</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">create</span> <span class="selector-tag">database</span> <span class="selector-tag">full</span>;</span><br><span class="line">&gt; <span class="selector-tag">create</span> <span class="selector-tag">table</span> <span class="selector-tag">t1</span> (<span class="selector-tag">id</span> <span class="selector-tag">int</span>);</span><br><span class="line">&gt; <span class="selector-tag">insert</span> <span class="selector-tag">into</span> <span class="selector-tag">t1</span> <span class="selector-tag">values</span>(1),(2),(3)</span><br></pre></td></tr></table></figure>
+<p><strong>2. 进行备份</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mysqldump -uroot -p123456 -A --master-data=2 --single-transaction -R -E --triggers &gt; /tmp/full.sql</span><br></pre></td></tr></table></figure>
+<p><strong>3. 传输备份文件</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ scp /tmp/full.sql 10.0.0.51:/data/3308</span><br></pre></td></tr></table></figure>
+<p><strong>4. 准备5.7数据库</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl start mysqld3308</span><br><span class="line">$ ss -lntup|grep 330*</span><br></pre></td></tr></table></figure>
+<p><strong>5. 导入5.7数据库</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mysql -S /data/3308/mysql.sock</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="built_in">set</span> sql_log_bin=0;</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="built_in">source</span> /data/3308/full.sql</span> </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>PS：<code>$ mysql_upgrade -uroot -S /data/3308/mysql.sock  </code> 导入5.6表需要使用mysql_upgrade升级一下</p>
+</blockquote>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Inaction</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://myboke.ink/2021/05/16/MySQL备份恢复-7/">https://myboke.ink/2021/05/16/MySQL备份恢复-7/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"></div><div class="social-share pull-right"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script><nav id="pagination"><div class="prev-post pull-left"><a href="/2021/05/16/MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6-8/"><i class="fa fa-chevron-left">  </i><span>MySQL主从复制-8</span></a></div><div class="next-post pull-right"><a href="/2021/05/15/MySQL%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86-6/"><span>MySQL日志管理-6</span><i class="fa fa-chevron-right"></i></a></div></nav><div id="gitalk-container"></div><script>var gitalk = new Gitalk({
+  clientID: '6cea6a646bff1a0d5f5b',
+  clientSecret: '6e9ef08f31f505d416bc0afe2d304808e9063627',
+  repo: 'zsjmal2316.github.io',
+  owner: 'zsjmal2316',
+  admin: 'zsjmal2316',
+  id: md5(decodeURI(location.pathname)),
+  language: 'en'
+})
+gitalk.render('gitalk-container')</script></div></div><footer class="footer-bg" style="background-image: url(img/beijing2.png)"><div class="layout" id="footer"><div class="copyright">&copy;2020 - 2021 By Inaction</div><div class="framework-info"><span>Driven - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.0"></script><script src="/js/fancybox.js?version=1.9.0"></script><script src="/js/sidebar.js?version=1.9.0"></script><script src="/js/copy.js?version=1.9.0"></script><script src="/js/fireworks.js?version=1.9.0"></script><script src="/js/transition.js?version=1.9.0"></script><script src="/js/scroll.js?version=1.9.0"></script><script src="/js/head.js?version=1.9.0"></script><script src="/js/search/local-search.js"></script><script id="ribbon" src="/js/third-party/canvas-ribbon.js" size="120" alpha="0.3" zIndex="-1" data-click="false"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>Powered by</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>
