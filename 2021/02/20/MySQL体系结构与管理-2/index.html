@@ -107,7 +107,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <li><p>8.0版本，ibdate1将undo也独立了</p>
 </li>
 </ul>
-<h3 id="简单总结MySQL文件结构"><a href="#简单总结MySQL文件结构" class="headerlink" title="简单总结MySQL文件结构"></a>简单总结MySQL文件结构</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210217171057288.png" alt="image-20210217171057288"></p>
+<h3 id="简单总结MySQL文件结构"><a href="#简单总结MySQL文件结构" class="headerlink" title="简单总结MySQL文件结构"></a>简单总结MySQL文件结构</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210217171057288.png"></p>
 <h2 id="MySQL存储结构"><a href="#MySQL存储结构" class="headerlink" title="MySQL存储结构"></a>MySQL存储结构</h2><p>其实一个表中的数据不会像文本那样存储，表里的数据是以行位单位存储，每一行会分为多个更细粒度的单元（比如字段），存储最小单元是页，即16K（也可以根据参数innodb_page_size调整为4k、8k、32k等），然后自成一套体系</p>
 <p><strong>段、区、页（只针对数据行）：</strong></p>
 <ul>
@@ -119,7 +119,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <ul>
 <li>一般情况下（非分区表），一张表就是一个段，一个段由多个区构成，每一个区1M，由64个连续（16k）页组成</li>
 </ul>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210217171639294.png" alt="image-20210217171639294"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210217171639294.png"></p>
 <h2 id="MySQL服务管理"><a href="#MySQL服务管理" class="headerlink" title="MySQL服务管理"></a>MySQL服务管理</h2><p>MySQL提供的网络访问模式，主要有socket和TCP/IP两类，并且对于每个实例，只能对应一个端口</p>
 <h3 id="Socket连接"><a href="#Socket连接" class="headerlink" title="Socket连接"></a>Socket连接</h3><p>socket是一种特殊的文件，也叫做套接字，是应用层与TCP/IP协议栈通信的中间软件抽象层</p>
 <p>socket连接可以理解是本地连接，MySQL默认使用socket方式连接。如果在服务端使用mysql命令即可连接到数据库的原因，mysql会启动时会寻找my.cnf配置文件中的socket文件路径，即使socket文件的生成目录在[mysqld]上指定。如果没有默认是/tmp/mysql.sock，默认使用的端口是3306</p>
@@ -130,7 +130,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mysql -uroot -p123456 -h 10.0.0.51 -P3306</span><br></pre></td></tr></table></figure>
 <h2 id="MySQL执行的层次结构"><a href="#MySQL执行的层次结构" class="headerlink" title="MySQL执行的层次结构"></a>MySQL执行的层次结构</h2><p>执行一条命令的过程，mysql一共分为三个层次结构进行执行，如下图</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">select</span> <span class="selector-tag">user</span>,<span class="selector-tag">host</span> <span class="selector-tag">from</span> <span class="selector-tag">mysql</span><span class="selector-class">.user</span>;</span><br></pre></td></tr></table></figure>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210205205855800.png" alt="image-20210205205855800"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210205205855800.png"></p>
 <p>sql_mode：是一组mysql支持的基本语法及校验规则。所有的关系型数据库管理数据的时候使用SQL语句，都是通用使用SQL语句。从mysql5.7才真正的使用了国际标准，SQL（5.6）之前的版本都是不严谨，之前的版本都会有存入错误</p>
 <h3 id="解析器简单测试"><a href="#解析器简单测试" class="headerlink" title="解析器简单测试"></a>解析器简单测试</h3><p>我们创建一个测试表进行测试</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">create</span> <span class="selector-tag">table</span> <span class="selector-tag">test</span> (<span class="selector-tag">id</span> <span class="selector-tag">int</span>,<span class="selector-tag">name</span> <span class="selector-tag">varchar</span>(30));</span><br></pre></td></tr></table></figure>
@@ -335,7 +335,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <li>第四种</li>
 </ul>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl start mysqld </span><br></pre></td></tr></table></figure>
-<h3 id="启动方式优先"><a href="#启动方式优先" class="headerlink" title="启动方式优先"></a>启动方式优先</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210205222253436.png" alt="image-20210205222253436"></p>
+<h3 id="启动方式优先"><a href="#启动方式优先" class="headerlink" title="启动方式优先"></a>启动方式优先</h3><p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210205222253436.png"></p>
 <ul>
 <li><p>启动方式1：/etc/init.mysqld（推荐）</p>
 <p>调用的是/application/mysql/support-files/mysql.server</p>
@@ -413,9 +413,9 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <p><strong>1. mysql TCP/IP登录命令(远程)</strong></p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">grant</span> <span class="selector-tag">all</span> <span class="selector-tag">on</span> *.* <span class="selector-tag">to</span> <span class="selector-tag">root</span>@’10.0.0.%’ identified by ‘<span class="number">123</span>’;</span><br><span class="line">$ mysql –uroot –p123 –h10.0.0.51 –P3306</span><br></pre></td></tr></table></figure>
 <p><strong>2. 用sqlyog软件登录，如图：输入主机地址，用户名和密码既可以登录</strong></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210205224613469.png" alt="image-20210205224613469"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210205224613469.png"></p>
 <p><strong>3. select user,local from mysql.user查看，按右键执行，或者按F9执行</strong></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210205224658078.png" alt="image-20210205224658078"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210205224658078.png"></p>
 </div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Inaction</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://myboke.ink/2021/02/20/MySQL体系结构与管理-2/">https://myboke.ink/2021/02/20/MySQL体系结构与管理-2/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MySQL/">MySQL</a></div><div class="social-share pull-right"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script><nav id="pagination"><div class="prev-post pull-left"><a href="/2021/03/02/MySQL%E7%9A%84SQL%E5%9F%BA%E7%A1%80%E5%BA%94%E7%94%A8-3/"><i class="fa fa-chevron-left">  </i><span>MySQL的SQL基础应用-3</span></a></div><div class="next-post pull-right"><a href="/2021/02/20/MySQL%E6%A6%82%E8%BF%B0%E4%B8%8E%E9%83%A8%E7%BD%B2%E5%AE%89%E8%A3%85-1/"><span>MySQL概述与部署安装-1</span><i class="fa fa-chevron-right"></i></a></div></nav><div id="gitalk-container"></div><script>var gitalk = new Gitalk({
   clientID: '6cea6a646bff1a0d5f5b',
   clientSecret: '6e9ef08f31f505d416bc0afe2d304808e9063627',

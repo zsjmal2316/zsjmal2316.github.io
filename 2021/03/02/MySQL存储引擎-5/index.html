@@ -32,7 +32,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <h2 id="InnoDB体系结构"><a href="#InnoDB体系结构" class="headerlink" title="InnoDB体系结构"></a>InnoDB体系结构</h2><p>下图分三个部分，上面的是缓存层，中间是线程层，下面是系统文件层。在每个层里面又会不断地细分，在MySQL里面存储的单位是页，大小是16K，缓存层包含buffer和cache，其中buffer对应缓存修改的数据（比如insert buffer）。cache对应缓存读取的舒适（比如page cache），通过缓存可以提高MySQL读写数据的效率</p>
 <p>系统文件层是相应的<strong>数据字典、数据文件和日志文件</strong>，其中binlog是MySQL Server层</p>
 <p>多线程设计是InnoDB的一大亮点，通过多线程的方式可以把缓存层与系统文件层的操作高效组织起来，使得Innodb可以提供完整的数据服务</p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210301113303766.png" alt="image-20210301113303766"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210301113303766.png"></p>
 <h2 id="查看InnoDB状态的技巧"><a href="#查看InnoDB状态的技巧" class="headerlink" title="查看InnoDB状态的技巧"></a>查看InnoDB状态的技巧</h2><p>MySQL中如果要查看InnoDB的状态，推荐的方式是使用命令<code>show engine innodb status</code>.</p>
 <p>头部内容信息显示当前的日期和时间，以及自上次输出依赖经过的时长，从时间和描述可看到这个命令的输出不是实时的结果</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">show</span> <span class="selector-tag">engine</span> <span class="selector-tag">innodb</span> <span class="selector-tag">status</span>\<span class="selector-tag">G</span>:</span><br><span class="line">*************************** 1. <span class="selector-tag">row</span> ***************************</span><br><span class="line">  <span class="selector-tag">Type</span>: <span class="selector-tag">InnoDB</span></span><br><span class="line">  <span class="selector-tag">Name</span>: </span><br><span class="line"><span class="selector-tag">Status</span>: </span><br><span class="line">=====================================</span><br><span class="line">2021<span class="selector-tag">-02-18</span> 22<span class="selector-pseudo">:30</span><span class="selector-pseudo">:51</span> 0<span class="selector-tag">x7fe3880f4700</span> <span class="selector-tag">INNODB</span> <span class="selector-tag">MONITOR</span> <span class="selector-tag">OUTPUT</span></span><br><span class="line">=====================================</span><br><span class="line"><span class="selector-tag">Per</span> <span class="selector-tag">second</span> <span class="selector-tag">averages</span> <span class="selector-tag">calculated</span> <span class="selector-tag">from</span> <span class="selector-tag">the</span> <span class="selector-tag">last</span> 5 <span class="selector-tag">seconds</span></span><br></pre></td></tr></table></figure>
@@ -92,7 +92,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2019 <span class="selector-tag">-</span> 02 <span class="selector-tag">-</span> 14<span class="selector-tag">T23</span> : 50 : 00 . 501209<span class="selector-tag">Z</span> 0 <span class="selector-attr">[Note]</span> <span class="selector-tag">InnoDB</span>: <span class="selector-tag">page_cleaner</span> : 1<span class="selector-tag">OOOms</span> <span class="selector-tag">intended</span></span><br><span class="line">loop took 28469710ms . The settings m工ght not be optimal . (flushed=O and</span><br><span class="line">evicted=O , during the time.)</span><br></pre></td></tr></table></figure>
 <h2 id="InnoDB的缓存池管理技术"><a href="#InnoDB的缓存池管理技术" class="headerlink" title="InnoDB的缓存池管理技术"></a>InnoDB的缓存池管理技术</h2><p>Buffer的本意是缓冲，cache是缓存，计算机术语里面有buffer cache和page cache，与数据库的含义是相似的</p>
 <p>计算机领域汇总处理磁盘IO读写时候，基于CPU、Memory和Disk，如图</p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210301133510778.png" alt="image-20210301133510778"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210301133510778.png"></p>
 <p>page cache是文件系统层面的缓存，数据库层面最直观就是首次查询数据的时候会慢一些，之后就会使用缓存会快速很多，整个过程是把磁盘里的数据里的一部分数据加载到缓存中</p>
 <p>buffer cache，是在写入磁盘时给与的缓冲，加快写入，是一个异步过程，而且为了防止断电丢失数据库，会按照一定的策略把数据刷新到磁盘</p>
 <p>理解MySQL里面的缓存池管理，使用show engine innodb status看一下缓冲池和内存输出内容，通过关键字“BUFFER POOL AND MEMORY”找到该位置</p>
@@ -103,7 +103,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">select</span> 5/8 , 1<span class="selector-tag">-</span> 120340/326446 , 100 <span class="selector-tag">-</span> @<span class="keyword">@innodb_old_blocks_pct</span>;</span><br><span class="line">+<span class="selector-tag">--------</span>+<span class="selector-tag">------------------</span>+<span class="selector-tag">-------------------------------</span>+</span><br><span class="line">| 5/8    | 1- 120340/326446 | 100 - @@innodb_old_blocks_pct |</span><br><span class="line">+<span class="selector-tag">--------</span>+<span class="selector-tag">------------------</span>+<span class="selector-tag">-------------------------------</span>+</span><br><span class="line">| 0.6250 |           0.6314 |                            63 |</span><br><span class="line">+<span class="selector-tag">--------</span>+<span class="selector-tag">------------------</span>+<span class="selector-tag">-------------------------------</span>+</span><br></pre></td></tr></table></figure>
 <p>midpoint 之前的列表称之为Sublist of new列表， 也叫young sublist 或者 sublist of new block 区域 ，里面的数据可以理解为热数据，之后的列表称之为Sublist of old 列表 ，也叫old sublist 或者 sublist of old block 区域</p>
 <p><strong>关系图如下</strong></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/redis-pages/image-20210515220434520.png" alt="image-20210515220434520"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/redis-pages/image-20210515220434520.png"></p>
 <p>一些全表扫描的表如果进入 sublist of new block 区域 ，整个 LRU 就会是性能瓶颈了，而且 midpoint 位置的页也不是永久的，这种情况也叫缓存污染。为了解决这个问题 ，InnoDB 存储引擎引入了 innodb_old_blocks_time 来表示页读取到 mid 位置之后需要等待多久才会被加入到 LRU 列表的热端。可以通过设置该参数来保证热点数据不轻易被刷出,这个参数值默认为 1000 （毫秒）。</p>
 <p>如果出现了多个BUFFER POOL的输出，BUFFER POOL会从0开始；通过该参数进行调整：innodb_buffer_pool_instances开启多个缓存池，把需要的数据页可以通过hash算法指向不同的缓存池里面，可以并行的内存读写，在高IO负载的情况下性能提升明显</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">select</span> @<span class="keyword">@innodb_buffer_pool_instances</span>;</span><br><span class="line">+<span class="selector-tag">--------------------------------</span>+</span><br><span class="line">| @@innodb_buffer_pool_instances |</span><br><span class="line">+<span class="selector-tag">--------------------------------</span>+</span><br><span class="line">|                              1 |</span><br><span class="line">+<span class="selector-tag">--------------------------------</span>+</span><br></pre></td></tr></table></figure>
@@ -115,7 +115,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <p>而对于脏页的刷新比例，是由参数 innodb_max_dirty_pages_pct 来控制的（默认是75 ，而根据谷歌压测推荐是80 ）</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">select</span> @<span class="keyword">@innodb_max_dirty_pages_pct</span>;</span><br><span class="line">+<span class="selector-tag">------------------------------</span>+</span><br><span class="line">| @@innodb_max_dirty_pages_pct |</span><br><span class="line">+<span class="selector-tag">------------------------------</span>+</span><br><span class="line">|                    75.000000 |</span><br><span class="line">+<span class="selector-tag">------------------------------</span>+</span><br></pre></td></tr></table></figure>
 <p><strong>LIST之间的关系图</strong></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210219161723158.png" alt="image-20210219161723158"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210219161723158.png"></p>
 <p><strong>其中buffer pool中的最小单位是页，分为三种类型</strong></p>
 <ul>
 <li><p>free page：此page未被使用，此种类型page位于FREE LIST中</p>
@@ -182,7 +182,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <p>PS：在数据导入中，为了提高性能，可以考虑临时调整参数值innodb_flush_log_at_trx_commit为0，数据导入后，恢复为1</p>
 </blockquote>
 <p>下图可以对双 1 参数做一各更为细致地解读，可以看到一各较为完整的生命周期</p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210301163433167.png" alt="image-20210301163433167"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210301163433167.png"></p>
 <p>undo记录了数据修改的前镜像。存放在ibdata中，它就好比是一个摄像机，记录了过去的美好时光</p>
 <h2 id="InnoDB中的检查机制"><a href="#InnoDB中的检查机制" class="headerlink" title="InnoDB中的检查机制"></a>InnoDB中的检查机制</h2><p>如果数据库宕机，可以借助redo来完成崩溃恢复，如何使用恢复的过程高效可行，就需要考虑检查点机制（checkpoint)，检查点机制就跟我们使用word编辑文件一样&gt;建议大家使用过程中边编辑边保存，否则电脑突然断电，可能照成数据丢失</p>
 <p>对于InnoDB存储引擎而言，是通过LSN（Log Sequence Number）来标记版本的。LSN是8字节的数字，每个页有LSN，重做日志中也有LSN，Checkpoint也有LSN。可以看下InnoDB status的输出内容</p>
@@ -231,7 +231,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 </tr>
 </tbody></table>
 <p>其中Async/Sync Flush Checkpoint会略微复杂一些，“sync”的位置大于是redo日志的7/8，“async”位置大约是redo日志的3/4，如下图</p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210219171658427.png" alt="image-20210219171658427"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210219171658427.png"></p>
 <h2 id="InnoDB存储引擎核心特性说明"><a href="#InnoDB存储引擎核心特性说明" class="headerlink" title="InnoDB存储引擎核心特性说明"></a>InnoDB存储引擎核心特性说明</h2><p>打上*的是InnoDB重要的特性</p>
 <table>
 <thead>
@@ -348,7 +348,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https://dev.mysql.com/doc/refman/5.6/en/innodb-architecture.html</span><br><span class="line">https://dev.mysql.com/doc/refman/5.7/en/innodb-architecture.html</span><br><span class="line">https://dev.mysql.com/doc/refman/5.8/en/innodb-architecture.html</span><br></pre></td></tr></table></figure>
 
 
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210208232415216.png" alt="image-20210208232415216"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210208232415216.png"></p>
 <h3 id="共享表空间设置"><a href="#共享表空间设置" class="headerlink" title="共享表空间设置"></a>共享表空间设置</h3><p>查看共享表空间的参数</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="selector-tag">select</span> @<span class="keyword">@innodb_data_file_path</span>;</span><br><span class="line">+<span class="selector-tag">-------------------------</span>+</span><br><span class="line">| @@innodb_data_file_path |</span><br><span class="line">+<span class="selector-tag">-------------------------</span>+</span><br><span class="line">| ibdata1:12M:autoextend  |  //共享表空间的ibdata1</span><br><span class="line">+<span class="selector-tag">-------------------------</span>+</span><br></pre></td></tr></table></figure>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; show variables like &#x27;%autoextend%&#x27;;</span><br><span class="line">+<span class="selector-tag">-----------------------------</span>+<span class="selector-tag">-------</span>+</span><br><span class="line">| Variable_name               | Value |</span><br><span class="line">+<span class="selector-tag">-----------------------------</span>+<span class="selector-tag">-------</span>+</span><br><span class="line">| innodb_autoextend_increment | 64    |</span><br><span class="line">+<span class="selector-tag">-----------------------------</span>+<span class="selector-tag">-------</span>+</span><br></pre></td></tr></table></figure>
@@ -493,8 +493,8 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <li>MySQL：在启动时，必须保证redo日志文件和数据文件LSN必须一致，如果不一致就会触发ACSR(自动故障恢复)，最终保证一致    </li>
 </ul>
 <p><strong>事务开始到事务提交，以断电后磁盘和内存是如何恢复的</strong></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210302101841199.png" alt="image-20210302101841199"></p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210302101857768.png" alt="image-20210302101857768"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210302101841199.png"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210302101857768.png"></p>
 <p><strong>语言描述情况：我们做一个事务，begin;update;commit</strong></p>
 <ul>
 <li><p>begin，立即分配一个TXID=tx_01</p>
@@ -523,7 +523,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <li>在CSR中实现未提交数据的回滚操作</li>
 <li>实现一致性快照，配置隔离级别保证MVCC（多版本并发控制），读和写的操作不会互相伤害</li>
 </ul>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210302101959088.png" alt="image-20210302101959088"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210302101959088.png"></p>
 <h2 id="锁和MVCC"><a href="#锁和MVCC" class="headerlink" title="锁和MVCC"></a>锁和MVCC</h2><p>“锁”顾名思义就是锁定的意思，而锁机制（Locking）通过锁机制保证数据一致性</p>
 <p><strong>锁的作用是什么</strong>：在事务ACID过程中，“锁”和“隔离级别”一起来实现“I”隔离性和”C” 一致性 </p>
 <p><strong>多版本并发控制（MVCC）</strong>：MVCC（Multiversion Concurrency Control）是侧重于读写并发的改善机制，它可以避免写操作堵塞读操作的并发问题，通过使用数据的多个版本保证并发读写不冲突。它是一种标准，并不是规定了明细的实现细节，所以在数据库方向上大体会有一些MVCC的不同实现</p>
@@ -546,9 +546,9 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <p>读-写场景，引出了两类读操作，快照读（Snapshot Read）和当前读（Current Read）。其中快照读-读取的是数据的可见版本，是数据历史镜像，这个过程不加锁的，而当前读-读取的是最新的版本，会加上锁，保证其他事务不会再修改这条记录</p>
 <p>比如触发一条select操作：select * from test where id=10;，id为主键，这条语句对应的操作就是快照读，而上述的共享锁和排它锁的SQL，还有常见的DML都属于当前读，操作过程中会读取当前最新的版本，保证其他事务不能修改当前记录</p>
 <p>比如下述例子，在窗口1没有提交之前，其他的更新会被行级锁住</p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210209210439849.png" alt="image-20210209210439849"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210209210439849.png"></p>
 <h3 id="MySQL中的MVCC"><a href="#MySQL中的MVCC" class="headerlink" title="MySQL中的MVCC"></a>MySQL中的MVCC</h3><p>我们通过下述的图示进行说明，比如T1，T2，T3是哪个顺序时间里发生了三次请求。分别是一次写请求和两次读请求，那么在MySQL中会先在T1时间生成一个快照，比如数据标识是90，然后在这个基础上进行数据修改，数据标识为100，但事务未提交</p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/redis-pages/image-20210511164636410.png" alt="image-20210511164636410"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/redis-pages/image-20210511164636410.png"></p>
 <p>在T1写数据事务内，T2时间的读请求会读取T1时间生成的快照数据，读取的数据标识依然是90，T3时间的读请求也是类似</p>
 <p><strong>小结</strong></p>
 <ul>
@@ -667,7 +667,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <p>如果是自动提交，则修改为不自动提交</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="built_in">set</span> autocommit=0</span></span><br></pre></td></tr></table></figure>
 <p>测试，写入一条更新语句，另一个窗口读取数据（这里是基于word库的city表）</p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210209211215566.png" alt="image-20210209211215566"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/img1/image-20210209211215566.png"></p>
 <h4 id="RC-幻读"><a href="#RC-幻读" class="headerlink" title="RC-幻读"></a>RC-幻读</h4><p><strong>transaction_isolation = read-committed：读已提交，可能出现幻读，防止脏读</strong></p>
 <p>创建表的时候建一个主键，主键会创建GAP+NextLock锁，阻止幻读</p>
 <p>窗口1</p>
@@ -675,7 +675,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <p>窗口2</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> begin;</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> update pp <span class="built_in">set</span> name=<span class="string">&#x27;x&#x27;</span> <span class="built_in">where</span> id&gt;2;</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> commit;</span></span><br></pre></td></tr></table></figure>
 <p>窗口1中的数据，就会发现原来窗口的数据发生了变化，id=2的数据列name变成了“c”。这是不可重复读的一个典型例子，会出现幻读，但是可以防止脏读。如下图</p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/redis-pages/image-20210511222703013.png" alt="image-20210511222703013"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/redis-pages/image-20210511222703013.png"></p>
 <h4 id="RR-不可重复读"><a href="#RR-不可重复读" class="headerlink" title="RR-不可重复读"></a>RR-不可重复读</h4><p><strong>transaction_isolation=REPEATABLE-READ：不可重复读，功能是防止“幻读”现象，利用的是undo的快照技术+GAP（间隙锁）+ NextLock（下键锁）</strong></p>
 <p>窗口1</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> create table pp(id int primary key not null,name varchar(10));</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> insert into pp values(1,<span class="string">&#x27;a&#x27;</span>);</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> insert into pp value(2,<span class="string">&#x27;b&#x27;</span>);</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> insert into pp value(5,<span class="string">&#x27;e&#x27;</span>);</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> begin;</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> select * from pp;</span></span><br></pre></td></tr></table></figure>
@@ -686,7 +686,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <p>提交事务，在查看数据变化，实际上窗口1中没有任何的DML操作，但是数据却已经改变了</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> commit;</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> select * from pp;</span></span><br></pre></td></tr></table></figure>
 <p>窗口1在没有提交前，数据还是以前的，但是使用指令commit提交后，查询的值就变成了a。虽然解决了幻读，但是会出现不可重复读</p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/redis-pages/image-20210511223333392.png" alt="image-20210511223333392"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/redis-pages/image-20210511223333392.png"></p>
 <h2 id="MySQL锁机制"><a href="#MySQL锁机制" class="headerlink" title="MySQL锁机制"></a>MySQL锁机制</h2><h3 id="MySQL锁的类型"><a href="#MySQL锁的类型" class="headerlink" title="MySQL锁的类型"></a>MySQL锁的类型</h3><p><strong>表级意向锁</strong></p>
 <p>上述有讲过InnoDB的锁，实现了两种类型的<code>行锁</code></p>
 <ul>
@@ -794,16 +794,16 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <p>插入测试数据并查看数据情况</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> insert into <span class="built_in">test</span> values(1,<span class="string">&#x27;aa&#x27;</span>),(2,<span class="string">&#x27;bb&#x27;</span>),(3,<span class="string">&#x27;cc&#x27;</span>),(4,<span class="string">&#x27;dd&#x27;</span>),(5,<span class="string">&#x27;ee&#x27;</span>),(6,<span class="string">&#x27;ff&#x27;</span>)</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> select * from <span class="built_in">test</span>;</span></span><br><span class="line">+------+------+</span><br><span class="line">| id   | name |</span><br><span class="line">+------+------+</span><br><span class="line">|    1 | aa   |</span><br><span class="line">|    2 | bb   |</span><br><span class="line">|    3 | cc   |</span><br><span class="line">|    4 | dd   |</span><br><span class="line">|    5 | ee   |</span><br><span class="line">|    6 | ff   |</span><br><span class="line">+------+------+</span><br></pre></td></tr></table></figure>
 <p>现在已RC隔离级别为例，触发一条SQL（select * from test where id=5 for update);加锁的情况如下图</p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/redis-pages/image-20210512123109585.png" alt="image-20210512123109585"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/redis-pages/image-20210512123109585.png"></p>
 <p>在这种情况下，select语句会根据where条件将唯一索引id=5记录加上X锁，同时得到name列，在主键聚集索引中将name=’ee’加上X锁</p>
 <p>id=5和name=’ee’是指向同样的记录，为设么分这么清楚，其实可以设想这样一个场景</p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/redis-pages/image-20210512124359795.png" alt="image-20210512124359795"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/redis-pages/image-20210512124359795.png"></p>
 <p>如果两个并发线程，线程1通过唯一性索引锁定，线程2通过主键索引来更新。如果线程1没有将主键索引上的记录加锁，那么并发线程2的update语句就会感知不到线程1的存在，会造成更新的冲突，如下图</p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/redis-pages/image-20210512124335526.png" alt="image-20210512124335526"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/redis-pages/image-20210512124335526.png"></p>
 <p>对于唯一索引来说，加锁会有2个X锁，一个位于唯一性索引的键值记录，另外一个对应聚集索引的键值。按照这个思路，对于非唯一性索引，也会关联锁定相应的主键聚集索引项</p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/redis-pages/image-20210512125454109.png" alt="image-20210512125454109"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/redis-pages/image-20210512125454109.png"></p>
 <p>这种场景略微复杂的一些的是基于RR隔离级别，并且是在非唯一性索引的情况下</p>
-<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/redis-pages/image-20210512125523265.png" alt="image-20210512125523265"></p>
+<p><img src="https://my-oss-image.oss-cn-guangzhou.aliyuncs.com/redis-pages/image-20210512125523265.png"></p>
 <p>在RR隔离级别下，产生的锁的复杂度要比RC的高，会增加间隙锁。从执行的代价来看，强烈建议不要太随意的设计索引</p>
 <h3 id="死锁案列"><a href="#死锁案列" class="headerlink" title="死锁案列"></a>死锁案列</h3><h4 id="insert语句导致的死锁"><a href="#insert语句导致的死锁" class="headerlink" title="insert语句导致的死锁"></a>insert语句导致的死锁</h4><p>通过三条insert导致死锁问题，我们来模拟一下这个场景</p>
 <p>首先要开启参数innodb_print_all_deadlocks，将死锁日志志错误日志中，而另一个参数是5.7版本之后增加的innodb_deadlock_detect，是默认打开的</p>
